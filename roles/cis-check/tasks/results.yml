@@ -1,0 +1,7 @@
+---
+- name: Dump CSV
+  copy:
+    dest: "~/{{ ansible_ssh_host }}-cis-check-{{ ansible_date_time.iso8601}}.csv"
+    content: "{{ ','.join(results.keys()|list) }}\n{{ ','.join(results.values()|map('string')|list) }}"
+  tags:
+    - results
