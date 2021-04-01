@@ -1,0 +1,28 @@
+---
+- name: 1.4.1 Ensure permissions on bootloader config are configured (Scored)
+  block:
+    - name: 1.4.1 check grub.cfg permissions
+      shell: "stat /boot/grub2/grub.cfg"
+      register: v141_output
+    - name: 1.4.1 set fact
+      set_fact:
+        results: "{{ results|combine({'1.4.1': v141_output.stdout|regex_findall('Access: \(0[1,2,4,6,7]00')!=0 and v141_output.stdout|regex_findall('Uid:\s*\(\s*0\/\s*root\s*\)\s*Gid:\s*\(\s*0\/\s*root\s*\)')!=0}) }}"
+- name: 1.4.2 Ensure bootloader password is set (Scored)
+  block:
+    - name: 1.4.2 check for grub password configuration
+      shell: 'grep "^GRUB2_PASSWORD=[^\s]+" /boot/grub2/grub.cfg'
+      register: v142_output
+    - name: 1.4.2 set fact
+      set_fact:
+        results: "{{ results|combine({'1.4.2': v142_output.stdout_lines|length>0}) }}"
+- name: 1.4.3 Ensure authentication required for single user mode (Scored)
+  block:
+    - name: 1.4.3 check rescue service for sulogin usage
+      shell: "grep /sbin/sulogin /usr/lib/systemd/system/rescue.service"
+      register: v143_1_output
+    - name: 1.4.3 check emergency service for sulogin usage
+      shell: "grep /sbin/sulogin /usr/lib/systemd/system/emergency.service"
+      register: v143_2_output
+    - name: 1.4.3 set fact
+      set_fact:
+        results: "{{ results|combine({'1.4.3': v143_1_output.stdout|regex_findall('ExecStart=*(/usr)?/sbin/sulogin'!=0) or v143_2_output.stdout|regex_findall('ExecStart=*(/usr)?/sbin/sulogin'!=0)} }}"
