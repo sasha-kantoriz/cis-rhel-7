@@ -1,0 +1,59 @@
+---
+- name: 2.1.1 Ensure chargen services are not enabled (Scored)
+  block:
+    - name: 2.1.1 check initd chargen service
+      shell: " chkconfig --list"
+      register: v211_output
+    - name: 2.1.1 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.1': (v211_output.stdout|regex_findall('chargen-dgram:\s*off')==1 or not 'chargen-dgram' in v211_output.stdout) and (v211_output.stdout|regex_findall('chargen-stream: off')==1 or not 'chargen-stream' in v211_output.stdout)}) }}"
+- name: 2.1.2 Ensure daytime services are not enabled (Scored)
+  block:
+    - name: 2.1.2 check daytime initd service
+      shell: "chkconfig --list"
+      register: v212_output
+    - neam: 2.1.2 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.2': (v212_output.stdout|regex_findall('daytime-dgram: off')==1 or not 'daytime-dgram' in v212_output.stdout) and (v212_output.stdout|regex_findall('daytime-stream: off')==1 or not 'daytime-stream' in v212_output.stdout)}) }}"
+- name: 2.1.3 Ensure discard services are not enabled (Scored)
+  block:
+    - name: 2.1.3 check discard initd service
+      shell: "chkconfig --list"
+      register: v213_output
+    - name: 2.1.3 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.3': (v213_output.stdout|regex_findall('discard-dgram: off') or not 'discra-dgram' in v213_output.stdout) and v213_output.stdout|regex_findall('discard-stream: off')==1 or not 'discard-stream' in v213_output.stdout}) }}"
+- name: 2.1.4 Ensure echo services are not enabled (Scored)
+  block:
+    - name: 2.1.4 check initd echo service
+      shell: "chkconfig --list"
+      register: v214_output
+    - name: 2.1.4 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.4': (v214_output.stdout|regex_findall('echo-dgram: off')==1 or not 'echo-dgram' in v214_output.stdout) and (v214_output.stdout|regex_findall('echo-stream: off')==1 or not 'echo-stream' in v214_output.stdout)}) }}"
+- name: 2.1.5 Ensure time services are not enabled (Scored)
+  block:
+    - name: 2.1.5 check time service
+      shell: "chkconfig --list"
+      register: v215_output
+    - name: 2.1.5 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.5': (v215_output.stdout|regex_findall('time-dgram: off')==1 or not 'time-dgram' in v215_output.stdout) and (v215_output.stdout|regex_findall('time-stream: off')==1 or not 'time-stream' in v215_output.stdout)}) }}"
+- name: 2.1.6 Ensure tftp server is not enabled (Scored)
+  block:
+    - name: 2.1.6 check tftp service
+      shell: "chkconfig --list"
+      register: v216_output
+    - name: 2.1.6 set fact
+      set_fact"
+        results: "{{ results|combine({'2.1.6': v216_output.stdout|regex_findall('tftp:\s*off')==1 or not 'tftp' in v216_output.stdout}) }}"
+- name: 2.1.7 Ensure xinetd is not enabled (Scored)
+  block:
+    - name: 2.1.7 check xinetd service enablence
+      shell: "systemctl is-enabled xinetd"
+      register: v217_output
+    - name: 2.1.7 set fact
+      set_fact:
+        results: "{{ results|combine({'2.1.7': not 'enabled' in v217_output}) }}"
+
+
