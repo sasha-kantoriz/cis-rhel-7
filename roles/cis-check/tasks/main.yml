@@ -1,0 +1,4 @@
+---
+# tasks file for cis-check
+- import_tasks: section1.yml
+- import_tasks: results.yml
