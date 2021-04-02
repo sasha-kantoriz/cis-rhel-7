@@ -2,22 +2,28 @@
 - name: 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration (Scored)
   block:
     - name: 1.6.1.1 check kernels grub configs for selinux parameters
-      shell: "grep '^\s*linux' /boot/greub2/grub.cfg"
+      shell: "grep '^\\s*linux' /boot/greub2/grub.cfg"
       register: v1611_output
     - name: 1.6.1.1 set fact
       set_fact:
         results: "{{ results|combine({'1.6.1.1': v1611_output.stdout|regex_findall('selinux=0')==0 and v1611_output.stdout|regex_findall('enforcing=0')==0}) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.1.2 Ensure the SELinux state is enforcing (Scored)
   block:
-    - nmae: 1.6.1.2 check selinux config
+    - name: 1.6.1.2 check selinux config
       shell: "egrep '^SELINUX=enforcing' /etc/selinux/config"
       register: v1612_1_output
     - name: 1.6.1.2 check sestatus
       shell: "sestatus"
-      reggister: v1612_2_output
+      register: v1612_2_output
     - name: 1.6.1.2 set fact
       set_fact:
-        results: "{{ results|combine({'1.6.1.2': 'SELINUX=enforcing' in v1612_1_output.stdout and v1612_1_output.stdout|regex_findall('SELinux status:\s*enabled')==1}) }}"
+        results: "{{ results|combine({'1.6.1.2': 'SELINUX=enforcing' in v1612_1_output.stdout and v1612_1_output.stdout|regex_findall('SELinux status:\\s*enabled')==1}) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.1.3 Ensure SELinux policy is configured (Scored)
   block:
     - name: 1.6.1.3 check selinux config policy
@@ -29,6 +35,9 @@
     - name: 1.6.1.3 set fact
       set_fact:
         results: "{{ results|combine({'1.6.1.3': 'SELINUXTYPE=targeted' in v1613_1_output.stdout and v1613_2.stdout|regex_findall('Loaded policy name: (targeted|mls)')==1}) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.1.4 Ensure SETroubleshoot is not installed (Scored)
   block:
     - name: 1.6.1.4 check setroubleshoot application
@@ -37,6 +46,9 @@
     - name: 1.6.1.4 set fact
       set_fact:
         results: "{{ results|combine('1.6.1.4': 'package setroubleshoot is not installed' in v1614_output.stdout) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.1.5 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
   block:
     - name: 1.6.1.5 check for mcstrans application
@@ -45,6 +57,9 @@
     - name: 1.6.1.5 set fact
       set_fact:
         results: "{{ results|combine({'1.6.1.5': 'package mcstrans is not installed' in v1615_output.stdout}) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.1.6 Ensure no unconfined daemons exist (Scored)
   block:
     - name: 1.6.1.6 check running processes for unconfigured daemons
@@ -53,6 +68,9 @@
     - name: 1.6.1.6 set fact
       set_fact:
         results: "{{ results|combine({'1.6.1.6': v1616_output.stdout_lines|length==0}) }}"
+  tags:
+    - 1_6
+    - section1
 - name: 1.6.2 Ensure SELinux is installed (Scored)
   block:
     - name: 1.6.2 check selinux package
@@ -61,3 +79,6 @@
     - name: 1.6.2 set fact
       set_fact:
         results: "{{ results|combine({'1.6.2': v162_output.stdout|regex_findall('libselinux-*')==1}) }}"
+  tags:
+    - 1_6
+    - section1

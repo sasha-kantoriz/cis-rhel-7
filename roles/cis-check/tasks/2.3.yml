@@ -6,6 +6,9 @@
       register: v231_output
     - set_fact:
         results: "{{ results|combine({'2.3.1': 'package ypbind is not installed' in v231_output.stdout}) }}"
+  tags:
+    - 2_3
+    - section2
 - name: 2.3.2 Ensure rsh client is not installed (Scored)
   block:
     - name: check wether rsh package is installed
@@ -13,6 +16,9 @@
       register: v232_output
     - set_fact:
         results: "{{ results|combine({'2.3.2': 'package rsh is not installed' in v232_output.stdout}) }}"
+  tags:
+    - 2_3
+    - section2
 - name: 2.3.3 Ensure talk client is not installed (Scored)
   block:
     - name: check wether talk client package is installed
@@ -20,6 +26,9 @@
       register: v233_output
     - set_fact:
         results: "{{ results|combine({'2.3.3': 'package talk is not installed' in v233_output.stdout}) }}"
+  tags:
+    - 2_3
+    - section3
 - name: 2.3.4 Ensure telnet client is not installed (Scored)
   block:
     - name: check if telnet client package is installed
@@ -27,10 +36,16 @@
       register: v234_output
     - set_fact:
         results: "{{ results|combine({'2.3.4': 'package telnet is not installed' in v234_output.stdout}) }}"
-- name: 2.3.5 Ensure LDAP client is not installed (Scored)
+  tags:
+    - 2_3
+    - section2
+- name: 2.3.5Ensure LDAP client is not installed (Scored)
   block:
     - name: check if ldap client is installed
       shell: "rpm -q openldap-clients"
       register: v235_output
     - set_fact:
         results: "{{ results|combine({'2.3.5': 'package openldap-clients is not installed' in v235_output.stdout}) }}"
+  tags:
+    - 2_3
+    - section2

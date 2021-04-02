@@ -8,7 +8,9 @@
   - name: 1.3.1 set fact
     set_fact:
       results: "{{ results|combine({'1.3.1': v131_output|regex_search('aide-*')}) }}"
-
+  tags:
+    - 1_3
+    - section1
 - name: 1.3.2 Ensure filesystem integrity is regularly checked (Scored)
   block:
     - name: 1.3.2 Check cron job for aide
@@ -17,3 +19,6 @@
     - name: 1.3.2 set fact
       set_fact:
         results: "{{ results|combine({'1.3.2': v132_output.stdout_lines|length>0 and v132_output.stdout_lines|map('regex_search','^[^#]*')|select('string')|list|length>0}) }}"
+  tags:
+    - 1_3
+    - section1

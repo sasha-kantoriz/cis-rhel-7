@@ -7,3 +7,6 @@
     - name: 1.8 set fact
       set_fact:
         results: "{{ results|combine({'1.8': 'No packages needed for security' in v18_output.stdout}) }}"
+  tags:
+    - 1_8
+    - section1

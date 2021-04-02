@@ -7,6 +7,9 @@
     - name: 1.7.1.1 set fact
       set_fact:
         results: "{{ results|combine({'1.7.1.1': v1711_output.stdout_lines|length==0}) }}"
+  tags:
+    - 1_7
+    - section1
 - name: 1.7.1.2 Ensure local login warning banner is configured properly (Not Scored)
   block:
     - name: 1.7.1.2 check /etc/issue file for presence os info
@@ -15,14 +18,20 @@
     - name: 1.7.1.2 set fact
       set_fact:
         results: "{{ results|combine({ '1.7.1.2': v1712_output.stdout_lines|length==0}) }}"
-- nname: 1.7.1.3 Ensure remote login warning banner is configured properly (No Scored)
+  tags:
+    - 1_7
+    - section1
+- name: 1.7.1.3 Ensure remote login warning banner is configured properly (No Scored)
   block:
   - name: 1.7.1.3 check network /etc/issue.net file for os info
     shell: "egrep '(\\v|\\r|\\m|\\s)' /etc/issue.net"
     register: v1713_output
   - name: 1.7.1.3 set fact
-      set_fact:
+    set_fact:
       results: "{{ results|combine({'1.7.1.3': v1713_output.stdout_lines|length==0}) }}"
+  tags:
+    - 1_7
+    - section1
 - name: 1.7.1.4 Ensure permissions on /etc/motd are configured (Not Scored)
   block:
     - name: 1.7.1.4 get /et/cmotd permissions
@@ -30,7 +39,10 @@
       register: v1714_output
     - name: 1.7.1.4 set fact
       set_fact:
-        results: "{{ results|combine({'1.7.1.4': v1714_output.stdout is match('Access:\s*(0644\/-rw-r--r--)\s*Uid:\s*(\s*0\/\s*root)\s*Gid:\s*(\s*0\/\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.4': v1714_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+  tags:
+    - 1_7
+    - section1
 - name: 1.7.1.5 Ensure permissions on /etc/issue are configured (Not Scored)
   block:
     - name: 1.7.1.5 get /et/cissue permissions
@@ -38,7 +50,10 @@
       register: v1715_output
     - name: 1.7.1.5 set fact
       set_fact:
-        results: "{{ results|combine({'1.7.1.5': v1715_output.stdout is match('Access:\s*(0644\/-rw-r--r--)\s*Uid:\s*(\s*0\/\s*root)\s*Gid:\s*(\s*0\/\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.5': v1715_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+  tags:
+    - 1_7
+    - section1
 - name: 1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)
   block:
     - name: 1.7.1.6 get /et/cissue.net permissions
@@ -46,14 +61,17 @@
       register: v1716_output
     - name: 1.7.1.6 set fact
       set_fact:
-        results: "{{ results|combine({'1.7.1.6': v1716_output.stdout is match('Access:\s*(0644\/-rw-r--r--)\s*Uid:\s*(\s*0\/\s*root)\s*Gid:\s*(\s*0\/\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.6': v1716_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+  tags:
+    - 1_7
+    - section1
 - name: 1.7.2 Ensure GDM login banner is configured (Scored)
   block:
     - name: 1.7.2 read gdm config
       shell: "cat /etc/dconf/profile/gdm"
-      ignore_erorrs: true
+      ignore_errors: true
       register: v172_1_output
-    - nmse: 1.7.2 verify banner message enabled parameter
+    - name: 1.7.2 verify banner message enabled parameter
       shell: "grep -r 'banner-message-enable=true' /etc/dconf/db/gdm.d/*"
       register: v172_2_output
       ignore_errors: true
@@ -64,3 +82,6 @@
     - name: 1.7.2 set fact
       set_fact:
         results: "{{ results|combine({'1.7.2': (v172_1_output.stdout_lines|length==0 or (v172_1_output.stdout is search('user-db:user') and v172_1_output.stdout is search('system-db:gdm') and v172_1_output is search('file-db:/usr/share/gdm/greeter-dconf-defaults'))) and (v172_2_output.stderr_lines|length>0 or (v172_2_output.stdout_lines|length==1 and v172_3_output.stdout_lines|length==1))}) }}"
+  tags:
+    - 1_7
+    - section1
