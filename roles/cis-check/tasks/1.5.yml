@@ -1,54 +1,56 @@
 ---
 - name: 1.5.1 Ensure core dumps are restricted (Scored)
   block:
-    - name: 1.5.1 check security limits
+    - name: 1.5.1 Ensure core dumps are restricted [check security limits]
       shell: 'egrep "^hard core" /etc/security/limits.conf /etc/security/limits.d/*'
+      ignore_errors: true
       register: v151_1_output
-    - name: 1.5.1 check sysctl for setuid programs for dumping core
+    - name: 1.5.1 Ensure core dumps are restricted [check sysctl for setuid programs for dumping core]
+      ignore_errors: true
       shell: "sysctl fs.suid_dumpable"
       register: v1515_2_output
-    - name: 1.5.1 check sysctl.confs for setuid programs dumping core
+    - name: 1.5.1 Ensure core dumps are restricted [check sysctl.confs for setuid programs dumping core]
       shell: 'grep -E "^fs\.suid_dumpable" /etc/sysctl.conf /etc/sysctl.d/*'
+      ignore_errors: true
       register: v151_3_output
-    - name: 1.5.1 set fact
-      set_fact:
-        results: "{{ results|combine({'1.5.1': v151_1_output.stdout is search('* hard core 0') and v151_2_output.stdout is search('fs.suid_dumpable = 0') and v151_3_output.stdout is search('fs.suid_dumpable = 0')}) }}"
+    - set_fact:
+        results: "{{ results|combine({'1.5.1 Ensure core dumps are restricted (Scored)': v151_1_output.stdout is search('\\* hard core 0') and v151_2_output.stdout is search('fs.suid_dumpable = 0') and v151_3_output.stdout is search('fs.suid_dumpable = 0')}) }}"
   tags:
     - 1_5
     - section1
 - name: 1.5.2 Ensure XD/NX support is enabled (Not Scored)
   block:
-    - name: 1.5.2 check No Execution option
+    - name: 1.5.2 Ensure XD/NX support is enabled
       shell: "dmesg | grep NX"
+      ignore_errors: true
       register: v152_output
-    - name: 1.5.2 set fact
-      set_fact:
-        results: "{{ results|combine({'1.5.2': 'NX (Execute Disable) protection: active' in v152_output.stdout }) }}"
+    - set_fact:
+        results: "{{ results|combine({'1.5.2 Ensure XD/NX support is enabled (Not Scored)': 'NX (Execute Disable) protection: active' in v152_output.stdout }) }}"
   tags:
     - 1_5
     - section1
 - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)
   block:
-    - name: 1.5.3 check sysctl for address randomization
+    - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled [check sysctl for address randomization]
       shell: "sysctl kernel.randomize_va_space"
       register: v153_1_output
-    - name: 1.5.3 check sysctl conf
+    - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled [check sysctl conf]
       shell: 'grep -E "^kernel\.randomize_va_space" /etc/sysctl.conf /etc/sysctl.d/*'
+      ignore_errors: true
       register: v153_2_output
-    - name: 1.5.3 set fact
-      set_fact:
-        results: "{{ results|combine({'1.5.3': 'kernel.randomize_va_space = 2' in v153_2_output and 'kernel.randomize_va_space = 2' in v153_1_output.stdout}) }}"
+    - set_fact:
+        results: "{{ results|combine({'1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)': 'kernel.randomize_va_space = 2' in v153_2_output and 'kernel.randomize_va_space = 2' in v153_1_output.stdout}) }}"
   tags:
     - 1_5
     - section1
 - name: 1.5.4 Ensure prelink is disabled (Scored)
   block:
-    - name: 1.5.4 check prelink application
+    - name: 1.5.4 Ensure prelink is disabled
       shell: "rpm -q prelink"
+      ignore_errors: true
       register: v154_output
-    - name: 1.5.4 set fact
-      set_fact:
-        results: "{{ results|combine({'1.5.4': 'package prelink is not installed' in v154_output.stdout })}}"
+    - set_fact:
+        results: "{{ results|combine({'1.5.4 Ensure prelink is disabled (Scored)': 'package prelink is not installed' in v154_output.stdout })}}"
   tags:
     - 1_5
     - section1
