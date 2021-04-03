@@ -7,9 +7,7 @@
       register: v1611_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.1 Ensure SELinux is not disabled in bootloader configuration (Scored)': v1611_output.stdout|regex_findall('selinux=0')==0 and v1611_output.stdout|regex_findall('enforcing=0')==0}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.1.2 Ensure the SELinux state is enforcing (Scored)
   block:
     - name: 1.6.1.2 Ensure the SELinux state is enforcing [check selinux config]
@@ -21,9 +19,7 @@
       register: v1612_2_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.2 Ensure the SELinux state is enforcing (Scored)': 'SELINUX=enforcing' in v1612_1_output.stdout and v1612_1_output.stdout|regex_findall('SELinux status:\\s*enabled')==1}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.1.3 Ensure SELinux policy is configured (Scored)
   block:
     - name: 1.6.1.3 Ensure SELinux policy is configured [check selinux config policy]
@@ -35,9 +31,7 @@
       register: v1613_2_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.3 Ensure SELinux policy is configured (Scored)': 'SELINUXTYPE=targeted' in v1613_1_output.stdout and v1613_2_output.stdout|regex_findall('Loaded policy name: (targeted|mls)')==1}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.1.4 Ensure SETroubleshoot is not installed (Scored)
   block:
     - name: 1.6.1.4 Ensure SETroubleshoot is not installed (Scored)
@@ -46,9 +40,7 @@
       register: v1614_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.4 Ensure SETroubleshoot is not installed (Scored)': 'package setroubleshoot is not installed' in v1614_output.stdout}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.1.5 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
   block:
     - name: 1.6.1.5 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
@@ -57,9 +49,7 @@
       register: v1615_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.5 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)': 'package mcstrans is not installed' in v1615_output.stdout}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.1.6 Ensure no unconfined daemons exist (Scored)
   block:
     - name: 1.6.1.6 Ensure no unconfined daemons exist
@@ -68,9 +58,7 @@
       register: v1616_output
     - set_fact:
         results: "{{ results|combine({'1.6.1.6 Ensure no unconfined daemons exist (Scored)': v1616_output.stdout_lines|length==0}) }}"
-  tags:
-    - 1_6
-    - section1
+
 - name: 1.6.2 Ensure SELinux is installed (Scored)
   block:
     - name: 1.6.2 Ensure SELinux is installed
@@ -79,6 +67,3 @@
       register: v162_output
     - set_fact:
         results: "{{ results|combine({'1.6.2 Ensure SELinux is installed (Scored)': v162_output.stdout|regex_findall('libselinux-*')==1}) }}"
-  tags:
-    - 1_6
-    - section1
