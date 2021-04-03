@@ -15,9 +15,7 @@
         ntp_use: "{{v2211_1_output is match('ntp-\\S+')}}"
     - set_fact:
         chrony_use: "{{v2211_2_output is match('chrony-\\S+')}}"
-  tags:
-    - 2_2
-    - section2
+
 
 - name: 2.2.1.2 Ensure ntp is configured (Scored)
   block:
@@ -40,9 +38,7 @@
     - set_fact:
         results: "{{ results|combine({'2.2.1.2 Ensure ntp is configured (Scored)': v2212_1_output.stdout is search('restrict\\s*(-4)?\\s*default\\s*(?=.*kod)\\s*(?=.*nomodify)\\s*(?=.*notrap)\\s*(?=.*nopeer)\\s*(?=.*noquery)\\s*')) and v2212_1_output.stdout is search('restrict\\s*-6\\s*default\\s*(?=.*kod)\\s*(?=.*nomodify)\\s*(?=.*notrap)\\s*(?=.*nopeer)\\s*(?=.*noquery)\\s*')) and v2212_2_output.stdout is search('server\\s*\\S+') and (('OPTIONS=\"-u ntp:ntp\"' in v2212_3_output.stdout) or ('-u ntp:ntp' in v2212_4_output.stdout))}) }}"
   when: "ntp_use"
-  tags:
-    - 2_2
-    - section2
+
 - name: 2.2.1.3 Ensure chrony is configured (Scored)
   block:
     - name: 2.2.1.3 Ensure chrony is configured [check remote server config]
@@ -56,6 +52,3 @@
     - set_fact:
         results: "{{ results|combine({'2.2.1.3 Ensure chrony is configured (Scored)': v2213_1_output.stdout is search('server\\s*\\S+') and 'OPTIONS=\"-u chrony\"' in v2213_2_output.stdout}) }}"
   when: "chrony_use"
-  tags:
-    - 2_2
-    - section2
