@@ -11,11 +11,14 @@
   block:
     - name: 1.2.2 Ensure gpgcheck is globally activated [check yum.conf]
       shell: "egrep -c '^gpgcheck=1' /etc/yum.conf"
+      ignore_errors: true
       register: v122_1_output
     - name: 1.2.2 Ensure gpgcheck is globally activated [get yum repos conf files]
       shell: "ls /etc/yum.repos.d/*"
+      ignore_errors: true
       register: v122_2_output
     - name: 1.2.2 Ensure gpgcheck is globally activated [check repos conf files]
+      ignore_errors: true
       shell: "egrep -c '^gpgcheck=1' {{ item }}"
       register: v122_3_output
       with_items: "{{v122_2_output.stdout_lines}}"
