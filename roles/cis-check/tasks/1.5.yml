@@ -15,9 +15,7 @@
       register: v151_3_output
     - set_fact:
         results: "{{ results|combine({'1.5.1 Ensure core dumps are restricted (Scored)': v151_1_output.stdout is search('\\* hard core 0') and v151_2_output.stdout is search('fs.suid_dumpable = 0') and v151_3_output.stdout is search('fs.suid_dumpable = 0')}) }}"
-  tags:
-    - 1_5
-    - section1
+
 - name: 1.5.2 Ensure XD/NX support is enabled (Not Scored)
   block:
     - name: 1.5.2 Ensure XD/NX support is enabled
@@ -26,9 +24,7 @@
       register: v152_output
     - set_fact:
         results: "{{ results|combine({'1.5.2 Ensure XD/NX support is enabled (Not Scored)': 'NX (Execute Disable) protection: active' in v152_output.stdout }) }}"
-  tags:
-    - 1_5
-    - section1
+
 - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)
   block:
     - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled [check sysctl for address randomization]
@@ -40,9 +36,7 @@
       register: v153_2_output
     - set_fact:
         results: "{{ results|combine({'1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)': 'kernel.randomize_va_space = 2' in v153_2_output and 'kernel.randomize_va_space = 2' in v153_1_output.stdout}) }}"
-  tags:
-    - 1_5
-    - section1
+
 - name: 1.5.4 Ensure prelink is disabled (Scored)
   block:
     - name: 1.5.4 Ensure prelink is disabled
@@ -51,9 +45,7 @@
       register: v154_output
     - set_fact:
         results: "{{ results|combine({'1.5.4 Ensure prelink is disabled (Scored)': 'package prelink is not installed' in v154_output.stdout })}}"
-  tags:
-    - 1_5
-    - section1
+
 
 
 
