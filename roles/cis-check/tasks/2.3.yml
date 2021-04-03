@@ -6,9 +6,7 @@
       register: v231_output
     - set_fact:
         results: "{{ results|combine({'2.3.1 Ensure NIS Client is not installed (Scored)': 'package ypbind is not installed' in v231_output.stdout}) }}"
-  tags:
-    - 2_3
-    - section2
+
 - name: 2.3.2 Ensure rsh client is not installed (Scored)
   block:
     - name: 2.3.2 Ensure rsh client is not installed
@@ -16,9 +14,7 @@
       register: v232_output
     - set_fact:
         results: "{{ results|combine({'2.3.2 Ensure rsh client is not installed (Scored)': 'package rsh is not installed' in v232_output.stdout}) }}"
-  tags:
-    - 2_3
-    - section2
+
 - name: 2.3.3 Ensure talk client is not installed (Scored)
   block:
     - name: 2.3.3 Ensure talk client is not installed
@@ -36,9 +32,7 @@
       register: v234_output
     - set_fact:
         results: "{{ results|combine({'2.3.4 Ensure telnet client is not installed (Scored)': 'package telnet is not installed' in v234_output.stdout}) }}"
-  tags:
-    - 2_3
-    - section2
+
 - name: 2.3.5Ensure LDAP client is not installed (Scored)
   block:
     - name: 2.3.5Ensure LDAP client is not installed
@@ -46,6 +40,3 @@
       register: v235_output
     - set_fact:
         results: "{{ results|combine({'2.3.5Ensure LDAP client is not installed (Scored)': 'package openldap-clients is not installed' in v235_output.stdout}) }}"
-  tags:
-    - 2_3
-    - section2

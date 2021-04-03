@@ -4,4 +4,10 @@
     - sub2_1
     - s2
 - import_tasks: 2.2.yml
+  tags:
+    - sub2_2
+    - s2
 - import_tasks: 2.3.yml
+  tags:
+    - sub2_3
+    - s2
