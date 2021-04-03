@@ -17,9 +17,7 @@
     - name: 1.2.2 set fact
       set_fact:
         results: "{{ results|combine({'1.2.2': '1' in v122_1_output and v122_4}) }}"
-  tags:
-    - 1_2
-    - section1
+
 
 - name:
   block:
@@ -28,10 +26,8 @@
       register: v123_output
     - name: 1.2.3 set fact
       set_fact:
-        results: "{{ results|combine({'1.2.3': 'CentOS Official Signing Key' in v123_output}) }}"
-  tags:
-    - 1_2
-    - section1
+        results: "{{ results|combine({'1.2.3': 'Red Hat' in v123_output}) }}"
+
 
 - name: 1.2.5 Disable the rhnsd Daemon (Not Scored)
   block:
@@ -42,6 +38,3 @@
     - name: 1.2.5 set fact
       set_fact:
         results: "{{ results|combine({'1.2.5': v125_output.stdout_lines| length==0 or not 'on' in v125_output.stdout }) }}"
-  tags:
-    - 1_2
-    - section1
