@@ -6,9 +6,7 @@
       register: v141_output
     - set_fact:
         results: "{{ results|combine({'1.4.1 Ensure permissions on bootloader config are configured (Scored)': v141_output.stdout|regex_findall('Access: \\(0[1,2,4,6,7]00')!=0 and v141_output.stdout|regex_findall('Uid:\\s*\\(\\s*0\\/\\s*root\\s*\\)\\s*Gid:\\s*\\(\\s*0\\/\\s*root\\s*\\)')!=0}) }}"
-  tags:
-    - 1_4
-    - section1
+
 - name: 1.4.2 Ensure bootloader password is set (Scored)
   block:
     - name: 1.4.2 Ensure bootloader password is set
@@ -17,9 +15,7 @@
       register: v142_output
     - set_fact:
         results: "{{ results|combine({'1.4.2 Ensure bootloader password is set (Scored)': v142_output.stdout_lines|length>0}) }}"
-  tags:
-    - 1_4
-    - section1
+
 - name: 1.4.3 Ensure authentication required for single user mode (Scored)
   block:
     - name: 1.4.3 Ensure authentication required for single user mode [check rescue service for sulogin usage]
@@ -32,6 +28,3 @@
       register: v143_2_output
     - set_fact:
         results: "{{ results|combine({'1.4.3 Ensure authentication required for single user mode (Scored)': v143_1_output.stdout|regex_findall('ExecStart=*(/usr)?/sbin/sulogin')!=0 or v143_2_output.stdout|regex_findall('ExecStart=*(/usr)?/sbin/sulogin')!=0}) }}"
-  tags:
-    - 1_4
-    - section1
