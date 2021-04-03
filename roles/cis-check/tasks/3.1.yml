@@ -1,0 +1,30 @@
+---
+- name: 3.1.1 Ensure IP forwarding is disabled (Scored)
+  block:
+    - name: 3.1.1 Ensure IP forwarding is disabled sysctl cli command
+      shell: "sysctl net.ipv4.ip_forward"
+      register: v311_1
+    - name: 3.1.1 Ensure IP forwarding is disabled sysctl conf
+      shell: "grep \"net\\.ipv4\\.ip_forward\" /etc/sysctl.conf /etc/sysctl.d/*"
+      ignore_errors: true
+      register: v311_2
+    - set_fact:
+        results: "{{ results|combine({'3.1.1 Ensure IP forwarding is disabled (Scored)': 'net.ipv4.ip_forward = 0' in v311_1.stdout and v311_2.stdout is match('net\\.ipv4\\.ip_forward\\s*=\\s*0')}) }}"
+- name: 3.1.2 Ensure packet redirect sending is disabled (Scored)
+  block:
+    - name: 3.1.2 Ensure packet redirect sending is disabled sysctl cli command [ipv4.all]
+      shell: "sysctl net.ipv4.conf.all.send_redirects"
+      register: v312_1
+    - name: 3.1.2 Ensure packet redirect sending is disabled sysctl cli command [ipv4.default]
+      shell: "sysctl net.ipv4.conf.default.send_redirects"
+      register: v312_2
+    - name: 3.1.2 Ensure packet redirect sending is disabled sysctl conf [ipv4.all]
+      shell: "grep \"net\\.ipv4\\.conf\\.all\\.send_redirects\" /etc/sysctl.conf /etc/sysctl.d/*"
+      register: v312_3
+      ignore_errors: true
+    - name: 3.1.2 Ensure packet redirect sending is disabled sysctl conf [ipv4.default]
+      shell: "grep \"net\\.ipv4\\.conf\\.default\\.send_redirects\" /etc/sysctl.conf /etc/sysctl.d/*"
+      register: v312_4
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.1.2 Ensure packet redirect sending is disabled (Scored)': 'net.ipv4.conf.all.send_redirects = 0' in v312_1.stdout and 'net.ipv4.conf.default.send_redirects = 0' in v312_2.stdout and v312_3.stdout is match('net\\.ipv4\\.conf\\.all\\.send_redirects\\s*=\\s*0' and v312_4.stdout is match('net\\.ipv4\\.conf\\.default\\.send_redirects\\s*=\\s*0'))}) }}"
