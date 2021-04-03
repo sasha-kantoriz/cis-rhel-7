@@ -1,341 +1,312 @@
 ---
 - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.1 modprobe
+    - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v cramfs"
       register: v11111
       ignore_errors: true
-    - name: 1.1.1.1 lsmod
+    - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep cramfs"
       register: v11112
       ignore_errors: true
-    - name: 1.1.1.1 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.1': 'install /bin/true' in v11111.stdout and v11112.stdout_lines|length==0}) }}"
 
 
 - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.2 modprobe
+    - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v freevxfs"
       register: v11121
       ignore_errors: true
-    - name: 1.1.1.2 lsmod
+    - name: 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep freevxfs"
       register: v11122
       ignore_errors: true
-    - name: 1.1.1.2 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.2': 'install /bin/true' in v11121.stdout and v11122.stdout_lines|length==0}) }}"
 
 
 - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.3 modprobe
+    - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v jffs2"
       ignore_errors: true
       register: v11131
-    - name: 1.1.1.3 lsmod
+    - name: 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep jffs2"
       ignore_errors: true
       register: v11132
-    - name: 1.1.1.3 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.3': 'install /bin/true' in v11131.stdout and v11132.stdout_lines|length==0}) }}"
 
 
 - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.4 modprobe
+    - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v hfs"
       ignore_errors: true
       register: v11141
-    - name: 1.1.1.4 lsmod
+    - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep hfs"
       ignore_errors: true
       register: v11142
-    - name: 1.1.1.4 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.4': 'install /bin/true' in v11141 and v11142.stdout_lines|length==0}) }}"
 
 
 - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.5 modprobe
+    - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v hfsplus"
       ignore_errors: true
       register: v11151
-    - name: 1.1.1.5 lsmod
+    - name: 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep hfsplus"
       ignore_errors: true
       register: v11152
-    - name: 1.1.1.5 set_fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.5': 'install /bin/true' in v11151.stdout and v11152.stdout_lines|length==0}) }}"
 
 
-- name: 1.1.1}).6 Ensure mounting of squashfs filesystems is disabled (Scored)
+- name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.6 modprobe
+    - name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v squashfs"
       ignore_errors: true
       register: v11161
-    - name: 1.1.1.6 lsmod
+    - name: 1.1.1.6 Ensure mounting of squashfs filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep squashfs"
       ignore_errors: true
       register: v11162
-    - name: 1.1.1.6 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.6': 'install /bin/true' in v11161.stdout and v11162.stdout_lines|length==0}) }}"
 
 - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.7 modprobe
+    - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v udf"
       ignore_errors: true
       register: v11171
-    - name: 1.1.1.7 lsmod
+    - name: 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep udf"
       ignore_errors: true
       register: v11172
-    - name: 1.1.1.7 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.7': 'install /bin/true' in v11171.stdout and v11172.stdout_lines|length==0}) }}"
 
 - name: 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored)
   block:
-    - name: 1.1.1.8 modprobe
+    - name: 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored) modprobe
       shell: "modprobe -n -v vfat"
       ignore_errors: true
       register: v11181
-    - name: 1.1.1.8 lsmod
+    - name: 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored) lsmod
       shell: "lsmod | grep vfat"
       ignore_errors: true
       register: v11182
-    - name: 1.1.1.8 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.1.8': 'install /bin/true' in v11181.stdout and v11182.stdout_lines|length==0}) }}"
 
 - name: 1.1.2 Ensure separate partition exists for /tmp (Scored)
   block:
-    - name: 1.1.2 check /tmp is mounted
+    - name: 1.1.2 Ensure separate partition exists for /tmp (Scored) check /tmp is mounted
       shell: "mount | grep /tmp"
       ignore_errors: true
       register: v112_output
-    - name: 1.1.2 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.2': v112_output.stdout_lines|length!=0}) }}"
 
 - name: 1.1.3 Ensure nodev option set on /tmp partition (Scored)
   block:
-    - name: 1.1.3 check nodev option
+    - name: 1.1.3 Ensure nodev option set on /tmp partition (Scored) check nodev option
       shell: "mount | grep /tmp"
       ignore_errors: true
       register: v113_output
-    - name: 1.1.3 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.3': 'nodev' in v113_output.stdout}) }}"
 
 - name: 1.1.4 Ensure nosuid option set on /tmp partition (Scored)
   block:
-    - name: 1.1.4 check nosuid
+    - name: 1.1.4 Ensure nosuid option set on /tmp partition (Scored) check nosuid
       shell: "mount | grep /tmp"
       ignore_errors: true
       register: v114_output
-    - name: 1.1.4 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.4': 'nosuid' in v114_output.stdout}) }}"
 
 - name: 1.1.5 Ensure noexec option set on /tmp partition (Scored)
   block:
-    - name: 1.1.5 check noexec option
+    - name: 1.1.5 Ensure noexec option set on /tmp partition (Scored) check noexec option
       shell: "mount | grep /tmp"
       ignore_errors: true
       register: v115_output
-    - name: 1.1.5 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.5': 'noexec' in v115_output}) }}"
 
 - name: 1.1.6 Ensure separate partition exists for /var (Scored)
   block:
-    - name: 1.1.6 check partition exists
+    - name: 1.1.6 Ensure separate partition exists for /var (Scored) check partition exists
       shell: "mount | grep /var"
       ignore_errors: true
       register: v116_output
-    - name: 1.1.6 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.6': v116_output.stdout_lines|length>0}) }}"
 
 - name: 1.1.7 Ensure separate partition exists for /var/tmp (Scored)
   block:
-    - name: 1.1.7 check nodev option
+    - name: 1.1.7 Ensure separate partition exists for /var/tmp (Scored) check nodev option
       shell:  "mount | grep /var/tmp"
       ignore_errors: true
       register: v117_output
-    - name: 1.1.7 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.7': 'nodev' in v117_output.stdout}) }}"
 
 - name: 1.1.8 Ensure nodev option set on /var/tmp partition (Scored)
   block:
-    - name: 1.1.8 check nodev option
+    - name: 1.1.8 Ensure nodev option set on /var/tmp partition (Scored) check nodev option
       shell: "mount | grep /var/tmp"
       ignore_errors: true
       register: v118_output
-    - name: 1.1.8 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.8': v118_output.stdout is search(\"nodev\")}) }}"
 
 - name: 1.1.9 Ensure nosuid option set on /var/tmp partition (Scored)
   block:
-    - name: 1.1.9 check partition exists
+    - name: 1.1.9 Ensure nosuid option set on /var/tmp partition (Scored) check partition exists
       shell: "mount | grep /var/tmp"
       ignore_errors: true
       register: v119_output
-    - name: 1.1.9 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.9': v119_output.stdout_lines|length>0}) }}"
 
 - name: 1.1.10 Ensure noexec option set on /var/tmp partition (Scored)
   block:
-    - name: 1.1.10 check noexec option
+    - name: 1.1.10 Ensure noexec option set on /var/tmp partition (Scored) check noexec option
       shell: "mount | grep /var/tmp"
       ignore_errors: true
       register: v11_10_output
-    - name: 1.1.10 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.10': v11_10_output.stdout is search(\"noexec\")}) }}"
 
 - name: 1.1.11 Ensure separate partition exists for /var/log (Scored)
   block:
-    - name: 1.1.11 check for existance partition
+    - name: 1.1.11 Ensure separate partition exists for /var/log (Scored) check for existance partition
       shell: "mount | grep /var/log"
       ignore_errors: true
       register: v11_11_output
-    - name: 1.1.11 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.13': v11_11_output.stdout_lines|length>0}) }}"
 
 - name: 1.1.12 Ensure separate partition exists for /var/log/audit (Scored)
   block:
-    - name: 1.1.12 check partition exists
+    - name: 1.1.12 Ensure separate partition exists for /var/log/audit (Scored) check partition exists
       shell: "mount | grep /var/log/audit"
       ignore_errors: true
       register: v11_12_output
-    - name: 1.1.12 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.12': v11_12_output.stdout_lines|length>0}) }}"
 
 - name: 1.1.13 Ensure separate partition exists for /home (Scored)
   block:
-    - name: 1.1.13 check partition exists
+    - name: 1.1.13 Ensure separate partition exists for /home (Scored) check partition exists
       shell: "mount | grep /home"
       ignore_errors: true
       register: v11_13_output
-    - name: 1.1.13 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.13': v11_13_output.stdout_lines|length>0}) }}"
 
 - name: 1.1.14 Ensure nodev option set on /home partition (Scored)
   block:
-    - name: 1.1.14 check nodev option
+    - name: 1.1.14 Ensure nodev option set on /home partition (Scored) check nodev option
       shell:  "mount | grep /home"
       ignore_errors: true
       register: v11_14_output
-    - name: 1.1.14 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.14': v11_14_output is search(\"nodev\")})}}"
 
 - name: 1.1.15 Ensure nodev option set on /dev/shm partition (Scored)
   block:
-    - name: 1.1.15 check nodev option
+    - name: 1.1.15 Ensure nodev option set on /dev/shm partition (Scored) check nodev option
       shell: "mount | grep /dev/shm"
       ignore_errors: true
       register: v11_15_output
-    - name: 1.1.15 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.15': v11_15_output is search(\"nodev\")}) }}"
 
 - name: 1.1.16 Ensure nosuid option set on /dev/shm partition (Scored)
   block:
-    - name: 1.1.16 check nosuid option
+    - name: 1.1.16 Ensure nosuid option set on /dev/shm partition (Scored) check nosuid option
       shell: "mount | grep /dev/shm"
       ignore_errors: true
       register: v11_16_output
-    - name: 1.1.16 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.16': v11_16_output is search(\"nosuid\")}) }}"
 
 - name: 1.1.17 Ensure noexec option set on /dev/shm partition (Scored)
   block:
-    - name: 1.1.17 check noexec option
+    - name: 1.1.17 Ensure noexec option set on /dev/shm partition (Scored) check noexec option
       shell: "mount | grep /dev/shm"
       ignore_errors: true
       register: v11_17_output
-    - name: 1.1.17 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.17': v11_17_output is search(\"noexec\")}) }}"
 
-- name: 1.1.18 Ensure nodev option set on removable media partitions (Not Scored)
-  block:
-  - name: 1.1.18 Check floppy removeable media for nodev option
-    shell: "grep 'floppy' /etc/fstab && grep 'floppy.*nodev' /etc/fstab"
-    ignore_errors: true
-    register: v11_18_1
-  - name: 1.1.18 Check cdrom removeable media for nodev option
-    shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.nodev' /etc/fstab"
-    register: v11_18_2
-    ignore_errors: true
-  - name: 1.1.18 set fact
-    set_fact:
-      results: "{{ results|combine({'1.1.18': (v11_18_1.rc==1 or 'nodev' in v11_18_1.stdout) and (v11_18_2.rc==1 or 'nodev' in v11_18_2.stdout)}) }}"
+#- name: 1.1.18 Ensure nodev option set on removable media partitions (Not Scored)
+#  block:
+#  - name: 1.1.18 Ensure nodev option set on removable media partitions (Not Scored) Check floppy removeable media for nodev option
+#    shell: "grep 'floppy' /etc/fstab && grep 'floppy.*nodev' /etc/fstab"
+#    ignore_errors: true
+#    register: v11_18_1
+#  - name: 1.1.18 Check cdrom removeable media for nodev option
+#    shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.nodev' /etc/fstab"
+#    register: v11_18_2
+#    ignore_errors: true
+#  - set_fact:
+#      results: "{{ results|combine({'1.1.18': (v11_18_1.rc==1 or 'nodev' in v11_18_1.stdout) and (v11_18_2.rc==1 or 'nodev' in v11_18_2.stdout)}) }}"
 
-- name: 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored)
-  block:
-    - name: 1.1.19 Check floppy removable media for nosuid option
-      shell: "grep 'floppy' /etc/fstab && grep 'floppy.nosuid' /etc/fstab"
-      ignore_errors: true
-      register: v11_19_1
-    - name: 1.1.19 Check cdrom removable media for nosuid option
-      shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.*nosuid' /etc/fstab"
-      ignore_errors: true
-      register: v11_19_2
-    - name: 1.1.19
-      set_fact:
-        results: "{{ results|combine({'1.1.19': (v11_19_1.rc==1 or 'nosuid' in v11_19_1.stdout) and (v11_19_2.rc==1 or 'nosuid' in v11_19_2.stdout)}) }}"
+#- name: 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored)
+#  block:
+#    - name: 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored) Check floppy removable media for nosuid option
+#      shell: "grep 'floppy' /etc/fstab && grep 'floppy.nosuid' /etc/fstab"
+#      ignore_errors: true
+#      register: v11_19_1
+#    - name: 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored) Check cdrom removable media for nosuid option
+#      shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.*nosuid' /etc/fstab"
+#      ignore_errors: true
+#      register: v11_19_2
+#    - set_fact:
+#        results: "{{ results|combine({'1.1.19': (v11_19_1.rc==1 or 'nosuid' in v11_19_1.stdout) and (v11_19_2.rc==1 or 'nosuid' in v11_19_2.stdout)}) }}"
 
-- name: 1.1.20 Ensure noexec option set on removable media partitions (Not Scored)
-  block:
-    - name: 1.1.20 Check floppy removable media for noexec option
-      shell: "grep 'floppy' /etc/fstab && grep 'floppy.*noexec' /etc/fstab"
-      ignore_errors: true
-      register: v11_20_1
-    - name: 1.1.20 Check cdrom removable media for noexec option
-      shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.*noexec' /etc/fstab"
-      ignore_errors: true
-      register: v11_20_2
-    - name: 1.1.20
-      set_fact:
-        results: "{{ results|combine({'1.1.20': (v11_20_1.rc==1 or 'noexec' in v11_20_1.stdout) and (v11_20_2.rc==1 or 'noexec' in v11_20_2.stdout)}) }}"
+#- name: 1.1.20 Ensure noexec option set on removable media partitions (Not Scored)
+#  block:
+#    - name: 1.1.20 Ensure noexec option set on removable media partitions (Not Scored) Check floppy removable media for noexec option
+#      shell: "grep 'floppy' /etc/fstab && grep 'floppy.*noexec' /etc/fstab"
+#      ignore_errors: true
+#      register: v11_20_1
+#    - name: 1.1.20 Ensure noexec option set on removable media partitions (Not Scored) Check cdrom removable media for noexec option
+#      shell: "grep 'cdrom' /etc/fstab && grep 'cdrom.*noexec' /etc/fstab"
+#      ignore_errors: true
+#      register: v11_20_2
+#    - set_fact:
+#        results: "{{ results|combine({'1.1.20': (v11_20_1.rc==1 or 'noexec' in v11_20_1.stdout) and (v11_20_2.rc==1 or 'noexec' in v11_20_2.stdout)}) }}"
 
 - name: 1.1.21 Ensure sticky bit is set on all world-writable directories (Scored)
   block:
-    - name: 1.1.21 check world writable folders
+    - name: 1.1.21 Ensure sticky bit is set on all world-writable directories (Scored) check world writable folders
       shell: "df --local -P 2> /dev/null | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type d \\( -perm -0002 -a ! -perm -1000 \\) 2> /dev/null"
       ignore_errors: true
       register: v11_21_output
-    - name: 1.1.21 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.21': v11_21_output.stdout_lines|length==0}) }}"
 
 - name: 1.1.22 Disable Automounting (Scored)
   block:
-    - name: 1.1.22 check whether autofs is disabled
+    - name: 1.1.22 Disable Automounting (Scored) check whether autofs is disabled
       command: systemctl is-enabled autofs
       ignore_errors: true
       register: v11_22_output
-    - name: 1.1.22 set fact
-      set_fact:
+    - set_fact:
         results: "{{ results|combine({'1.1.22': not 'enabled' in v11_22_output.stdout_lines or v11_22_output.rc==1}) }}"
 
 
