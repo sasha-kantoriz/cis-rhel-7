@@ -14,7 +14,7 @@
       ignore_errors: true
       register: v151_3_output
     - set_fact:
-        results: "{{ results|combine({'1.5.1 Ensure core dumps are restricted (Scored)': v151_1_output.stdout is search('\\* hard core 0') and v151_2_output.stdout is search('fs.suid_dumpable = 0') and v151_3_output.stdout is search('fs.suid_dumpable = 0')}) }}"
+        results: "{{ results|combine({'1.5.1 Ensure core dumps are restricted (Scored)': v151_1_output.stdout is match('\\* hard core 0') and v151_2_output.stdout is match('fs.suid_dumpable = 0') and v151_3_output.stdout is match('fs.suid_dumpable = 0')}) }}"
 
 - name: 1.5.2 Ensure XD/NX support is enabled (Not Scored)
   block:
