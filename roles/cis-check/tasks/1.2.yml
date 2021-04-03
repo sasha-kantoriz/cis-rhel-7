@@ -1,40 +1,52 @@
 ---
+- name:
+  block:
+    - name: 1.2.1 Ensure package manager repositories are configured
+      shell: "yum repolist"
+      register: v121
+    - set_fact:
+        results: "{{ results|combine({'1.2.1 Ensure package manager repositories are configured (Not Scored)': v121.stdout_lines|length>3}) }}"
+
 - name: 1.2.2 Ensure gpgcheck is globally activated (Scored)
   block:
-    - name: 1.2.2 check yum.conf
+    - name: 1.2.2 Ensure gpgcheck is globally activated [check yum.conf]
       shell: "egrep -c '^gpgcheck=1' /etc/yum.conf"
       register: v122_1_output
-    - name: 1.2.2 get yum repos conf files
+    - name: 1.2.2 Ensure gpgcheck is globally activated [get yum repos conf files]
       shell: "ls /etc/yum.repos.d/*"
       register: v122_2_output
-    - name: 1.2.2 check repos conf files
+    - name: 1.2.2 Ensure gpgcheck is globally activated [check repos conf files]
       shell: "egrep -c '^gpgcheck=1' {{ item }}"
       register: v122_3_output
       with_items: "{{v122_2_output.stdout_lines}}"
-    - name: 1.2.2 check repo files facts
-      set_fact:
+    - set_fact:
         v122_4: v122_3_output.results | selectattr('stdout','equalto','0') | list | count == 0
-    - name: 1.2.2 set fact
-      set_fact:
-        results: "{{ results|combine({'1.2.2': '1' in v122_1_output and v122_4}) }}"
-
+    - set_fact:
+        results: "{{ results|combine({'1.2.2 Ensure gpgcheck is globally activated (Scored)': '1' in v122_1_output and v122_4}) }}"
 
 - name:
   block:
-    - name: 1.2.3 Ensure GPG keys are configured (Not Scored)
+    - name: 1.2.3 Ensure GPG keys are configured
       shell: "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'"
       register: v123_output
     - name: 1.2.3 set fact
       set_fact:
-        results: "{{ results|combine({'1.2.3': 'Red Hat' in v123_output}) }}"
+        results: "{{ results|combine({'1.2.3 Ensure GPG keys are configured (Not Scored)': v123_output.stdout_lines|length>0}) }}"
 
-
-- name: 1.2.5 Disable the rhnsd Daemon (Not Scored)
+- name:
   block:
-    - name: 1.2.5 Check config for RHNSD
+    - name: 1.2.4 Ensure Red Hat Subscription Manager connection is configured
+      shell: "subscription-manager identity"
+      register: v124
+    - set_fact:
+        results: "{{ results|combine({'1.2.4 Ensure Red Hat Subscription Manager connection is configured (Not Scored)': 'system identity:\\s*' in v124.stdout}) }}"
+
+- name:
+  block:
+    - name: 1.2.5 Disable the rhnsd Daemon
       shell: chkconfig --list rhnsd
       ignore_errors: true
       register: v125_output
     - name: 1.2.5 set fact
       set_fact:
-        results: "{{ results|combine({'1.2.5': v125_output.stdout_lines| length==0 or not 'on' in v125_output.stdout }) }}"
+        results: "{{ results|combine({'1.2.5 Disable the rhnsd Daemon (Not Scored)': v125_output.stdout_lines| length==0 or not 'on' in v125_output.stdout }) }}"
