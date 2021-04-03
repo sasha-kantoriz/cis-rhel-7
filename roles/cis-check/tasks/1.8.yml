@@ -1,12 +1,11 @@
 ---
 - name: 1.8 Ensure updates, patches, and additional security software are installed (Scored)
   block:
-    - name: 1.8 check applications for security updates
+    - name: 1.8 Ensure updates, patches, and additional security software are installed
       shell: "yum check-update --security"
       register: v18_output
-    - name: 1.8 set fact
-      set_fact:
-        results: "{{ results|combine({'1.8': 'No packages needed for security' in v18_output.stdout}) }}"
+    - set_fact:
+        results: "{{ results|combine({'1.8 Ensure updates, patches, and additional security software are installed (Scored)': 'No packages needed for security' in v18_output.stdout}) }}"
   tags:
     - 1_8
     - section1
