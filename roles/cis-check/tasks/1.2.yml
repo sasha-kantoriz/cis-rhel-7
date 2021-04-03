@@ -43,7 +43,7 @@
       ignore_errors: true
       register: v124
     - set_fact:
-        results: "{{ results|combine({'1.2.4 Ensure Red Hat Subscription Manager connection is configured (Not Scored)': 'system identity:\\s*' in v124.stdout}) }}"
+        results: "{{ results|combine({'1.2.4 Ensure Red Hat Subscription Manager connection is configured (Not Scored)': 'system identity:\\s*\\S+' in v124.stdout}) }}"
 
 - name:
   block:
