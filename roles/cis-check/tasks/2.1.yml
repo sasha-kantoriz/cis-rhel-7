@@ -69,10 +69,11 @@
   block:
     - name: 2.1.7 check xinetd service enablence
       shell: "systemctl is-enabled xinetd"
+      ignore_errors: true
       register: v217_output
     - name: 2.1.7 set fact
       set_fact:
-        results: "{{ results|combine({'2.1.7': not 'enabled' in v217_output}) }}"
+        results: "{{ results|combine({'2.1.7': not 'enabled' in v217_output or v217_output.rc==1}) }}"
   tags:
     - 2_1
     - section2
