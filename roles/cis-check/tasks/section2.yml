@@ -1,4 +1,7 @@
 ---
 - import_tasks: 2.1.yml
+  tags:
+    - sub2_1
+    - s2
 - import_tasks: 2.2.yml
 - import_tasks: 2.3.yml
