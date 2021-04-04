@@ -3,3 +3,7 @@
   tags:
     - sub3_1
     - s3
+- import_tasks: 3.2.yml
+  tags:
+    - sub3_2
+    - s3
