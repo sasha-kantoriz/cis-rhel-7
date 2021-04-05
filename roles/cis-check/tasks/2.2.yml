@@ -1,4 +1,6 @@
 ---
+### 2.2 Special Purpose Services
+
 - name: 2.2.1.1 Ensure time synchronization is in use (Not Scored)
   block:
     - name: 2.2.1.1 Ensure time synchronization is in use [check ntp application]

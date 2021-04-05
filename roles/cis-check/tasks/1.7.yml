@@ -1,4 +1,6 @@
 ---
+### 1.7 Warning Banners
+
 - name: 1.7.1.1 Ensure message of the day is configured properly (Scored)
   block:
     - name: 1.7.1.1 Ensure message of the day is configured properly

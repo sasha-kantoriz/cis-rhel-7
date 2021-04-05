@@ -1,4 +1,6 @@
 ---
+### 1.2 Configure Software Updates
+
 - name:
   block:
     - name: 1.2.1 Ensure package manager repositories are configured

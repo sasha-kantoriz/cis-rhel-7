@@ -1,4 +1,6 @@
 ---
+### 1.1 Filesystem Configuration
+
 - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Scored)
   block:
     - name: 1.1.1.1 Ensure mounting of cramfs filesystems is disabled [modprobe]

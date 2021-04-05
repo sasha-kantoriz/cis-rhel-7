@@ -1,4 +1,6 @@
 ---
+### 1.5 Additional Process Hardening
+
 - name: 1.5.1 Ensure core dumps are restricted (Scored)
   block:
     - name: 1.5.1 Ensure core dumps are restricted [check security limits]

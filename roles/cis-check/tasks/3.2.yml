@@ -1,4 +1,6 @@
 ---
+### 3.2 Network Parameters (Host and Router)
+
 - name: 3.2.1 Ensure source routed packets are not accepted (Scored)
   block:
     - name: 3.2.1 Ensure source routed packets are not accepted [sysctl cli ipv4.conf.all]

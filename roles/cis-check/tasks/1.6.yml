@@ -1,4 +1,6 @@
 ---
+### 1.6 Mandatory Access Control
+
 - name: 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration (Scored)
   block:
     - name: 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration

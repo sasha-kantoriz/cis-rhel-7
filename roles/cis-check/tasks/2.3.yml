@@ -1,4 +1,6 @@
 ---
+### 2.3 Service Clients
+
 - name: 2.3.1 Ensure NIS Client is not installed (Scored)
   block:
     - name: 2.3.1 Ensure NIS Client is not installed
