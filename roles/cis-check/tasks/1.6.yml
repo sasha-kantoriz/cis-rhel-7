@@ -4,7 +4,7 @@
 - name: 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration (Scored)
   block:
     - name: 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration
-      shell: "grep '^\\s*linux' /boot/greub2/grub.cfg"
+      shell: "grep '^\\s*linux' /boot/grub2/grub.cfg"
       ignore_errors: true
       register: v1611_output
     - set_fact:
