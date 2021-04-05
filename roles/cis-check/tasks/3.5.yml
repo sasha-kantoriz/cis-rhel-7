@@ -1,0 +1,51 @@
+---
+### 3.5 Uncommon Network Protocols
+
+- name: 3.5.1 Ensure DCCP is disabled (Not Scored)
+  block:
+    - name: 3.5.1 Ensure DCCP is disabled [modprobe]
+      shell: "modprobe -n -v dccp"
+      ignore_errors: true
+      register: v351_1
+    - name: 3.5.1 Ensure DCCP is disabled [lsmod]
+      shell: "lsmod | grep dccp"
+      ignore_errors: true
+      register: v351_2
+    - set_fact:
+        results: "{{ results|combine({'3.5.1 Ensure DCCP is disabled (Not Scored)': ('install /bin/true' in v351_1.stdout or v351_1.stdout_lines|length==0) and v351_2.stdout_lines|length==0}) }}"
+- name: 3.5.2 Ensure SCTP is disabled (Not Scored)
+  block:
+    - name: 3.5.2 Ensure SCTP is disabled [modprobe]
+      shell: "modprobe -n -v sctp"
+      register: v352_1
+      ignore_errors: true
+    - name: 3.5.2 Ensure SCTP is disabled [lsmod]
+      shell: "lsmod | grep sctp"
+      register: v352_2
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.5.2 Ensure SCTP is disabled (Not Scored)': ('install /bin/true' in v352_1.stdout or v352_1.stdout_lines|length==0) and v352_2.stdout_lines|length==0}) }}"
+- name: 3.5.3 Ensure RDS is disabled (Not Scored)
+  block:
+    - name: 3.5.3 Ensure RDS is disabled [modprobe]
+      shell: modprobe -n -v rds
+      register: v353_1
+      ignore_errors: true
+    - name: 3.5.3 Ensure RDS is disabled [lsmod]
+      shell: "lsmod | grep rds"
+      register: v353_2
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.5.3 Ensure RDS is disabled (Not Scored)': ('install /bin/true' in v353_1.stdout or v353_1.stdout_lines|length==0) and v353_2.stdout_lines|length==0}) }}"
+- name: 3.5.4 Ensure TIPC is disabled (Not Scored)
+  block:
+    - name: 3.5.4 Ensure TIPC is disabled [modprobe]
+      shell: "modprobe -n -v tipc"
+      register: v354_1
+      ignore_errors: true
+    - name: 3.5.4 Ensure TIPC is disabled [lsmod]
+      shell: "lsmod | grep tipc"
+      register: v354_2
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.5.4 Ensure TIPC is disabled (Not Scored)': ('install /bin/true' in v354_1.stdout or v354_1.stdout_lines|length==0) and v354_2.stdout_lines|length==0}) }}"
