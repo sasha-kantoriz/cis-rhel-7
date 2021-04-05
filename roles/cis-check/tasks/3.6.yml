@@ -1,0 +1,65 @@
+---
+### 3.6 Firewall Configuration
+
+
+- name: 3.6.1 Ensure iptables is installed (Scored)
+  block:
+    - name: 3.6.1 Ensure iptables is installed
+      shell: "rpm -q iptables"
+      register: v361
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.6.1 Ensure iptables is installed (Scored)': v361.stdout is match('iptables-\\S*')}) }}"
+- name: 3.6.2 Ensure default deny firewall policy (Scored)
+  block:
+    - name: 3.6.2 Ensure default deny firewall policy
+      shell: "iptables -L"
+      register: v362
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.6.2 Ensure default deny firewall policy (Scored)': v362.stdout is search('Chain\\s*INPUT\\s*\\(policy\\s*(DROP|REJECT)\\)') and v362.stdout is search('Chain\\s*FORWARD\\s*\\(policy\\s*(DROP|REJECT)\\)') and v362.stout is search('Chain\\s*OUTPUT\\s*\\(policy\\s*(DROP|REJECT)\\)')}) }}"
+- name: 3.6.3 Ensure loopback traffic is configured (Scored)
+  block:
+    - name: 3.6.3 Ensure loopback traffic is configured [INPUT chain]
+      shell: "iptables -L INPUT -v -n"
+      register: v363_1
+      ignore_errors: true
+    - set_fact:
+        v363_11: '{{ v363_1.stdout_lines|select("match", "\S+\s*\S+\s*ACCEPT\s*all\s*--\s*lo\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0")|list }}'
+    - set_fact:
+        v363_12: '{{ v363_1.stdout_lines|select("match", "\S+\s*\S+\s*(DROP|REJECT)\s*all\s*--\s*\*\s*\*\s*127\.0\.0\.0\/8\s*0\.0\.0\.0\/0")|list }}'
+    - name: 3.6.3 Ensure loopback traffic is configured [OUPUT chain]
+      shell: "iptables -L OUTPUT -v -n"
+      register: v363_2
+      ignore_errors: true
+    - set_fact:
+        v363_21: '{{ v363_2.stdout_lines|select("match", "\S+\s*\S+\s*ACCEPT\s*all\s*--\s*\*\s*lo\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0")|list }}'
+    - set_fact:
+        results: "{{ results|combine({'3.6.3 Ensure loopback traffic is configured (Scored)': v363_11|length==1 and v363_12|length==1 and v363_21|length==1 and (v363_1.stdout_lines.index(v363_11|first) < v363_1.stdout_lines.index(v363_12|first)) }) }}"
+- name: 3.6.4 Ensure outbound and established connections are configured (Not Scored)
+  block:
+    - name: 3.6.4 Ensure outbound and established connections are configured [INPUT defaults]
+      shell: "iptables -L INPUT -v -n"
+      register: v364_1
+    - name: 3.6.4 Ensure outbound and established connections are configured [OUTPUT defaults]
+      shell: "iptables -L OUTPUT -v -n"
+      register: v364_2
+    - set_fact:
+        results: '{{ results|combine({"3.6.4 Ensure outbound and established connections are configured (Not Scored)": v364_1.stdout is match("\S+\s*\S+ACCEPT\s*all\s*--\s*\*\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0\s*ctstate\s*(RELATED,)?ESTABLISHED") and v364_2.stdout is match("\S+\s*\S+\s*OUTPUT\s*all\s*--\s*\*\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0(\s*)?(ctstate\s*)?(NEW)?(,)?(ESTABLISHED)?")}) }}'
+- name: 3.6.5 Ensure firewall rules exist for all open ports (Scored)
+  block:
+    - name: 3.6.5 Ensure firewall rules exist for all open ports [list firewall INPUT chain]
+      shell: "iptables -L INPUT -n -v"
+      register: v365_1
+    - name: 3.6.5 Ensure firewall rules exist for all open ports [list running services, servers only]
+      shell: "ss -ln"
+      register: v365_2
+    - set_fact:
+        v365_2: '{{ v365_2.stdout_lines|select("search", ":\d+")|list }}'
+    - name: 3.6.5 Ensure firewall rules exist for all open ports
+      set_fact:
+        result: "{{ v365_1.stdout is search(item.split()[4][item.split()[4].rindex(':'):])}}"
+      register: v365_33
+      with_items: "{{ v365_2 }}"
+    - set_fact:
+        results: "{{ results|combine({'3.6.5 Ensure firewall rules exist for all open ports (Scored)': v365_33.results|selectattr('ansible_facts', 'defined')|selectattr('ansible_facts.result', 'equalto', false)|list|count==0}) }}"

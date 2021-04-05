@@ -19,3 +19,7 @@
   tags:
     - sub3_5
     - s3
+- import_tasks: 3.6.yml
+  tags:
+    - sub3_6
+    - s3
