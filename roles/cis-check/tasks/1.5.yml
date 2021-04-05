@@ -37,7 +37,7 @@
       ignore_errors: true
       register: v153_2_output
     - set_fact:
-        results: "{{ results|combine({'1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)': 'kernel.randomize_va_space = 2' in v153_2_output or 'kernel.randomize_va_space = 2' in v153_1_output.stdout}) }}"
+        results: "{{ results|combine({'1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)': v153_2_output is match('kernel\\.randomize_va_space\\s*=\\s*2') or 'kernel.randomize_va_space = 2' in v153_1_output.stdout}) }}"
 
 - name: 1.5.4 Ensure prelink is disabled (Scored)
   block:
