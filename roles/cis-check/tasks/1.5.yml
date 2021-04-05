@@ -4,7 +4,7 @@
 - name: 1.5.1 Ensure core dumps are restricted (Scored)
   block:
     - name: 1.5.1 Ensure core dumps are restricted [check security limits]
-      shell: 'egrep "^hard core" /etc/security/limits.conf /etc/security/limits.d/*'
+      shell: 'egrep "hard core" /etc/security/limits.conf /etc/security/limits.d/*'
       ignore_errors: true
       register: v151_1_output
     - name: 1.5.1 Ensure core dumps are restricted [check sysctl for setuid programs for dumping core]
