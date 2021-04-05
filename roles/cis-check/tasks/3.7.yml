@@ -1,0 +1,17 @@
+---
+### 3.7 Ensure wireless interfaces are disabled (Not Scored)
+- name: 3.7 Ensure wireless interfaces are disabled (Not Scored)
+  block:
+    - name: 3.7 Ensure wireless interfaces are disabled [get wireless interfaces]
+      shell: "iwconfig | awk '$1~/^[a-z0-9-]+/ {print $1}'"
+      ignore_errors: true
+      register: v371
+    - name: 3.7 Ensure wireless interfaces are disabled [get up network interfaces]
+      shell: "ip link show up"
+      register: v372
+    - set_fact:
+        result: "{{ v372.stdout is search(item) }}"
+      register: v373
+      with_items: "{{ v371.stdout_lines }}"
+    - set_fact:
+        results: "{{ results|combine({'3.7 Ensure wireless interfaces are disabled (Not Scored)': v373.results|length>0 and v373.results|selectattr('ansible_facts.result', 'equalto', false)|list|count==0}) }}"
