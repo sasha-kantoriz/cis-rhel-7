@@ -25,7 +25,7 @@
       register: v122_3_output
       with_items: "{{v122_2_output.stdout_lines}}"
     - set_fact:
-        v122_4: v122_3_output.results | selectattr('stdout','equalto','0') | list | count == 0
+        v122_4: "{{ v122_3_output.results | selectattr('stdout','equalto','0') | list | count == 0 }}"
     - set_fact:
         results: "{{ results|combine({'1.2.2 Ensure gpgcheck is globally activated (Scored)': '1' in v122_1_output and v122_4}) }}"
 
