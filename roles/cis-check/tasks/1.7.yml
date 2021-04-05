@@ -67,4 +67,4 @@
       register: v172_3_output
       ignore_errors: true
     - set_fact:
-        results: "{{ results|combine({'1.7.2 Ensure GDM login banner is configured (Scored)': (v172_1_output.stdout_lines|length==0 or (v172_1_output.stdout is search('user-db:user') and v172_1_output.stdout is search('system-db:gdm') and v172_1_output is search('file-db:/usr/share/gdm/greeter-dconf-defaults'))) and (v172_2_output.stderr_lines|length>0 or (v172_2_output.stdout_lines|length>1 and v172_3_output.stdout_lines|length>1))}) }}"
+        results: "{{ results|combine({'1.7.2 Ensure GDM login banner is configured (Scored)': (v172_1_output.stdout_lines|length==0 or (v172_1_output.stdout is search('user-db:user') and v172_1_output.stdout is search('system-db:gdm') and v172_1_output is search('file-db:/usr/share/gdm/greeter-dconf-defaults'))) and (v172_2_output.stderr_lines|length>0 or (v172_2_output.stdout_lines|length>0 and v172_3_output.stdout_lines|length>0))}) }}"
