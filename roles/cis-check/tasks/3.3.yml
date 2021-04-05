@@ -1,0 +1,47 @@
+---
+### 3.3 IPv6
+
+- name: 3.3.1 Ensure IPv6 router advertisements are not accepted (Not Scored)
+  block:
+    - name: 3.3.1 Ensure IPv6 router advertisements are not accepted [sysctl cli ipv6.conf.all]
+      shell: "sysctl net.ipv6.conf.all.accept_ra"
+      register: v331_1
+    - name: 3.3.1 Ensure IPv6 router advertisements are not accepted [sysctl ipv6.conf.default]
+      shell: "sysctl net.ipv6.conf.default.accept_ra"
+      register: v331_2
+    - name: 3.3.1 Ensure IPv6 router advertisements are not accepted [sysctl conf ipv6.conf.all]
+      shell: 'grep "net\.ipv6\.conf\.all\.accept_ra" /etc/sysctl.conf /etc/sysctl.d/*'
+      register: v331_3
+      ignore_errors: true
+    - name: 3.3.1 Ensure IPv6 router advertisements are not accepted [sysctl ipv6.conf.default]
+      shell: 'grep "net\.ipv6\.conf\.default\.accept_ra" /etc/sysctl.conf /etc/sysctl.d/*'
+      register: v331_4
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'3.3.1 Ensure IPv6 router advertisements are not accepted (Not Scored)': ('net.ipv6.conf.all.accept_ra = 0' in v331_1.stdout or v331_3.stdout is match('net\\.ipv6\\.conf\\.all\\.accept_ra\\s*=\\s*0') and ('net.ipv6.conf.default.accept_ra = 0' in v331_2.stdout or v331_4.stdout is match('net\\.ipv6\\.conf\\.default\\.accept_ra\\s*=\\s*0')))}) }}"
+- name: 3.3.2 Ensure IPv6 redirects are not accepted (Not Scored)
+  block:
+    - name: 3.3.2 Ensure IPv6 redirects are not accepted [sysctl cli ipv6.conf.all]
+      shell: "sysctl net.ipv6.conf.all.accept_redirects"
+      register: v332_1
+    - name: 3.3.2 Ensure IPv6 redirects are not accepted [sysctl cli ipv6.conf.default]
+      shell: "sysctl net.ipv6.conf.default.accept_redirects"
+      register: v332_2
+    - name: 3.3.2 Ensure IPv6 redirects are not accepted [sysctl conf ipv6.conf.all]
+      shell: 'grep "net\.ipv6\.conf\.all\.accept_redirect" /etc/sysctl.conf /etc/sysctl.d/*'
+      ignore_errors: true
+      register: v332_3
+    - name: 3.3.2 Ensure IPv6 redirects are not accepted [sysctl conf ipv6.conf.default]
+      shell: 'grep "net\.ipv6\.conf\.default\.accept_redirect" /etc/sysctl.conf /etc/sysctl.d/*'
+      ignore_errors: true
+      register: v332_4
+    - set_fact:
+        results: "{{ results|combine({'3.3.2 Ensure IPv6 redirects are not accepted (Not Scored)': ('net.ipv6.conf.all.accept_redirect = 0' in v332_1.stdout or v332_3.stdout is match('net\\.ipv6\\.conf\\.all\\.accept_redirect\\s*=\\s*0')) and ('net.ipv6.conf.default.accept_redirect = 0' in v332_3.stdout or v332_4.stdout is match('net\\.ipv6\\.conf\\.default\\.accept_redirect\\s*=\\s*0'))}) }}"
+- name: 3.3.3 Ensure IPv6 is disabled (Not Scored)
+  block:
+    - name: 3.3.3 Ensure IPv6 is disabled
+      shell: 'grep "^\s*linux" /boot/grub2/grub.cfg'
+      ignore_errors: true
+      register: v333
+    - set_fact:
+        results: "{{ results|combine({'3.3.3 Ensure IPv6 is disabled (Not Scored)': v333.stdout_lines|select('search', 'ipv6.disable=1')|count == v333.stdout_lines|length}) }}"
