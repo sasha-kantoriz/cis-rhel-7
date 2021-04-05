@@ -62,4 +62,4 @@
       register: v365_33
       with_items: "{{ v365_2 }}"
     - set_fact:
-        results: "{{ results|combine({'3.6.5 Ensure firewall rules exist for all open ports (Scored)': v365_33.results|selectattr('ansible_facts', 'defined')|selectattr('ansible_facts.result', 'equalto', false)|list|count==0}) }}"
+        results: "{{ results|combine({'3.6.5 Ensure firewall rules exist for all open ports (Scored)': v365_33.results|selectattr('ansible_facts.result', 'equalto', false)|list|count==0}) }}"
