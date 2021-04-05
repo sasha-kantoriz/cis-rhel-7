@@ -25,7 +25,7 @@
       ignore_errors: true
       register: v152_output
     - set_fact:
-        results: "{{ results|combine({'1.5.2 Ensure XD/NX support is enabled (Not Scored)': 'NX (Execute Disable) protection: active' in v152_output.stdout }) }}"
+        results: "{{ results|combine({'1.5.2 Ensure XD/NX support is enabled (Not Scored)': 'protection: active' in v152_output.stdout }) }}"
 
 - name: 1.5.3 Ensure address space layout randomization (ASLR) is enabled (Scored)
   block:
