@@ -3,6 +3,7 @@
   block:
     - name: 2.3.1 Ensure NIS Client is not installed
       shell: "rpm -q ypbind"
+      ignore_errors: true
       register: v231_output
     - set_fact:
         results: "{{ results|combine({'2.3.1 Ensure NIS Client is not installed (Scored)': 'package ypbind is not installed' in v231_output.stdout}) }}"
@@ -11,6 +12,7 @@
   block:
     - name: 2.3.2 Ensure rsh client is not installed
       shell: "rpm -q rsh"
+      ignore_errors: true
       register: v232_output
     - set_fact:
         results: "{{ results|combine({'2.3.2 Ensure rsh client is not installed (Scored)': 'package rsh is not installed' in v232_output.stdout}) }}"
@@ -19,6 +21,7 @@
   block:
     - name: 2.3.3 Ensure talk client is not installed
       shell: "rpm -q talk"
+      ignore_errors: true
       register: v233_output
     - set_fact:
         results: "{{ results|combine({'2.3.3 Ensure talk client is not installed (Scored)': 'package talk is not installed' in v233_output.stdout}) }}"
@@ -29,6 +32,7 @@
   block:
     - name: 2.3.4 Ensure telnet client is not installed
       shell: "rpm -q telnet"
+      ignore_errors: true
       register: v234_output
     - set_fact:
         results: "{{ results|combine({'2.3.4 Ensure telnet client is not installed (Scored)': 'package telnet is not installed' in v234_output.stdout}) }}"
@@ -37,6 +41,7 @@
   block:
     - name: 2.3.5Ensure LDAP client is not installed
       shell: "rpm -q openldap-clients"
+      ignore_errors: true
       register: v235_output
     - set_fact:
         results: "{{ results|combine({'2.3.5Ensure LDAP client is not installed (Scored)': 'package openldap-clients is not installed' in v235_output.stdout}) }}"
