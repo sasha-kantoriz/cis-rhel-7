@@ -8,3 +8,7 @@
   tags:
     - sub5_2
     - s5
+- import_tasks: 5.3.yml
+  tags:
+    - sub5_3
+    - s5
