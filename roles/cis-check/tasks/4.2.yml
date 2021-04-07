@@ -23,7 +23,7 @@
       shell: "ls -l /var/log/ | awk '{ print $5 }'"
       register: v4212_3
     - set_fact:
-        results: '{{ results|combine({"": v4212_1.stdout_lines|length>0 and v4212_2.stdout_lines|length>0 and v4212_3.stdout_lines|select("equalto", "0")|count<v4212_3.stdout_lines|length}) }}'
+        results: '{{ results|combine({"4.2.1.2 Ensure logging is configured (Not Scored)": v4212_1.stdout_lines|length>0 and v4212_2.stdout_lines|length>0 and v4212_3.stdout_lines|select("equalto", "0")|count<v4212_3.stdout_lines|length}) }}'
 - name: 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
   block:
     - name: 4.2.1.3 Ensure rsyslog default file permissions configured [count rsyslog conf files]
