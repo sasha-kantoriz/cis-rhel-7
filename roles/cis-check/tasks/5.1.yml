@@ -75,4 +75,4 @@
       register: v518_4
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"": v518_1.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") and v518_2.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*( 0/ root)") and (v518_3.rc==1 and "No such file or directory" in v518_3.stderr) and (v518.rc == 1 and "No such file or directory" in v518_4.stderr)}) }}'
+        results: '{{ results|combine({"5.1.8 Ensure at/cron is restricted to authorized users (Scored)": v518_1.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") and v518_2.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*( 0/ root)") and (v518_3.rc==1 and "No such file or directory" in v518_3.stderr) and (v518.rc == 1 and "No such file or directory" in v518_4.stderr)}) }}'
