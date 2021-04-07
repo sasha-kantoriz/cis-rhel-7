@@ -1,0 +1,147 @@
+---
+### 5.2 SSH Server Configuration
+
+- name: 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
+  block:
+    - name: 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured
+      shell: "stat /etc/ssh/sshd_config"
+      register: v521
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)": v521.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") }) }}'
+- name: 5.2.2 Ensure SSH Protocol is set to 2 (Scored)
+  block:
+    - name: 5.2.2 Ensure SSH Protocol is set to 2
+      shell: 'grep "^Protocol" /etc/ssh/sshd_config'
+      register: v522
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.2 Ensure SSH Protocol is set to 2 (Scored)": v522.stdout is match("Protocol\s*2$")}) }}'
+- name: 5.2.3 Ensure SSH LogLevel is set to INFO (Scored)
+  block:
+    - name: 5.2.3 Ensure SSH LogLevel is set to INFO
+      shell: 'grep "^LogLevel" /etc/ssh/sshd_config'
+      register: v523
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.3 Ensure SSH LogLevel is set to INFO (Scored)": v523.stdout is match("LogLevel\s*INFO")}) }}'
+- name: 5.2.4 Ensure SSH X11 forwarding is disabled (Scored)
+  block:
+    - name: 5.2.4 Ensure SSH X11 forwarding is disabled
+      shell: grep "^X11Forwarding" /etc/ssh/sshd_config
+      register: v524
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.4 Ensure SSH X11 forwarding is disabled (Scored)": v524.stdout is match("X11Forwarding\s*no")}) }}'
+- name: 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
+  block:
+    - name: 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less
+      shell: 'grep "^MaxAuthTries" /etc/ssh/sshd_config'
+      register: v525
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)": v525.stdout is match("MaxAuthTries\s*[0-4]$")}) }}'
+- name: 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)
+  block:
+    - name: 5.2.6 Ensure SSH IgnoreRhosts is enabled
+      shell: 'grep "^IgnoreRhosts" /etc/ssh/sshd_config'
+      register: v526
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)": v526.stdout is match("IgnoreRhosts\s*yes")}) }}'
+- name: 5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored)
+  block:
+    - name: 5.2.7 Ensure SSH HostbasedAuthentication is disabled
+      shell: 'grep "^HostbasedAuthentication" /etc/ssh/sshd_config'
+      register: v527
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored)": v527.stdout is match("HostbasedAuthentication\s*no")}) }}'
+- name: 5.2.8 Ensure SSH root login is disabled (Scored)
+  block:
+    - name: 5.2.8 Ensure SSH root login is disabled
+      shell: 'grep "^PermitRootLogin" /etc/ssh/sshd_config'
+      register: v528
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.8 Ensure SSH root login is disabled (Scored)": v528.stdout is match("PermitRootLogin\s*no")}) }}'
+- name: 5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored)
+  block:
+    - name: 5.2.9 Ensure SSH PermitEmptyPasswords is disabled
+      shell: 'grep "^PermitEmptyPasswords" /etc/ssh/sshd_config'
+      register: v529
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored)": v529.stdout is match("PermitEmptyPasswords\s*no")}) }}'
+- name: 5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored)
+  block:
+    - name: 5.2.10 Ensure SSH PermitUserEnvironment is disabled
+      shell: 'grep PermitUserEnvironment /etc/ssh/sshd_config'
+      register: v5210
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored)": v5210.stdout is match("PermitUserEnvironment\s*no")}) }}'
+- name: 5.2.11 Ensure only approved MAC algorithms are used (Scored)
+  block:
+    - name: 5.2.11 Ensure only approved MAC algorithms are used [grep used MACs]
+      shell: 'grep "MACs" /etc/ssh/sshd_config'
+      register: v5211_1
+      ignore_errors: true
+    - name: 5.2.11 Ensure only approved MAC algorithms are used
+      set_fact:
+        result: '{{ item in "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com,curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256" }}'
+      register: v5211_2
+      with_items: '{{ (v5211_1.stdout).split()[-1].split(",") }}'
+      when: '{{ v5211_1.stdout|length>0 }}'
+    - set_fact:
+        v5211_2: {'results': [{'ansible_facts': { 'result': false } }] }
+    - set_fact:
+        results: '{{ results|combine({"5.2.11 Ensure only approved MAC algorithms are used (Scored)": v5211_2.results|selectattr("ansible_facts", "defined")|map(attribute="ansible_facts.result")|select("equalto", false)|count==0}) }}'
+- name: 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
+  block:
+    - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured
+      shell: 'grep "^ClientAliveInterval" /etc/ssh/sshd_config'
+      register: v5212_1
+      ignore_errors: true
+    - name:
+      shell: 'grep "^ClientAliveCountMax" /etc/ssh/sshd_config'
+      register: v5212_2
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)": v5212_1.stdout is match("ClientAliveInterval\s*[0-300]$") and v5212_2.stdout is match("ClientAliveCountMax\s*[0-3]$")}) }}'
+- name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
+  block:
+    - name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less
+      shell: 'grep "^LoginGraceTime" /etc/ssh/sshd_config'
+      register: v5213
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)": v5213.stdout is match("LoginGraceTime\s*[0-60]$")}) }}'
+- name: 5.2.14 Ensure SSH access is limited (Scored)
+  block:
+    - name: 5.2.14 Ensure SSH access is limited [allowusers]
+      shell: 'grep "^AllowUsers" /etc/ssh/sshd_config'
+      register: v5214_1
+      ignore_errors: true
+    - name: 5.2.14 Ensure SSH access is limited [allowgroups]
+      shell: 'grep "^AllowGroups" /etc/ssh/sshd_config'
+      register: v5214_2
+      ignore_errors: true
+    - name: 5.2.14 Ensure SSH access is limited [deny users]
+      shell: 'grep "^DenyUsers" /etc/ssh/sshd_config'
+      register: v5214_3
+      ignore_errors: true
+    - name: 5.2.14 Ensure SSH access is limited [denygroups]
+      shell: 'grep "^DenyGroups" /etc/ssh/sshd_config'
+      register: v5214_4
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.14 Ensure SSH access is limited (Scored)": v5214_1.stdout is match("AllowUsers\s*\S+") or v5214_2.stdout is match("AllowGroups\s*\S+") or v5214_3.stdout is match("DenyUsers\s\S+") or v5214_4.stdout is match("DenyGroups\s*\S+")}) }}'
+- name: 5.2.15 Ensure SSH warning banner is configured (Scored)
+  block:
+    - name: 5.2.15 Ensure SSH warning banner is configured
+      shell: 'grep "^Banner" /etc/ssh/sshd_config'
+      register: v5215
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.2.15 Ensure SSH warning banner is configured (Scored)": v5215.stdout is match("Banner\s*\/etc\/issue\.net")}) }}'
