@@ -73,7 +73,7 @@
       register: v4222
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine("4.2.2.2 Ensure logging is configured (Not Scored)": v4222.stdout_lines|length>0) }}'
+        results: '{{ results|combine({"4.2.2.2 Ensure logging is configured (Not Scored)": v4222.stdout_lines|length>0}) }}'
 - name: 4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)
   block:
     - name: 4.2.2.3 Ensure syslog-ng default file permissions configured
@@ -84,20 +84,20 @@
         results: '{{ results|combine({"4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)": v4223.stdout is match("perm\(0[64][40]0\)")}) }}'
 - name: 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)
   block:
-    - name:
+    - name: 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host
       shell: 'cat /etc/syslog-ng/syslog-ng.conf'
       register: v4224
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)": not hostvars[inventory_hostname]["syslog_ng_client"]|bool and v4224..stdout is search("destination\s*\w+\s*{\s*tcp\(\"\S+\"\s*port\(\d+\)\);\s*};")}) and v4224.stdout is search("log\s*{\s*source\(\w+\);\s*destination\(\w+\);\s*};")}) }}'
+        results: "{{ results|combine({'4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)': not hostvars[inventory_hostname]['syslog_ng_log_host']|bool and v4224.stdout is search('destination\\s*\\w+\\s*{\\s*tcp\\(\"\\S+\"\\s*port\\(\\d+\\)\\);\\s*};') and v4224.stdout is search('log\\s*{\\s*source\\(\\w+\\);\\s*destination\\(\\w+\\);\\s*};')}) }}"
 - name: 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)
   block:
-    - name:
+    - name: 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts
       shell: "cat /etc/syslog-ng/syslog-ng.conf"
       register: v4225
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)": hostvars[inventory_hostname]["syslog_ng_log_host"]|bool and v4225.stdout is match("source\s*net{\s*tcp\(\);\s*};") and v4225.stdout is match("destination\s*\w+\s*{\s*file\(\"*\${FULLHOST}*\"\);\s*};") and v4225.stdout is match("log\s*{\s*source\(net\);\s*destination\(\w+\);\s*};")}) }}'
+        results: "{{ results|combine({'4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)': hostvars[inventory_hostname]['syslog_ng_log_host']|bool and v4225.stdout is match('source\\s*net{\\s*tcp\\(\\);\\s*};') and v4225.stdout is match('destination\\s*\\w+\\s*{\\s*file\\(\"*\\${FULLHOST}*\"\\);\\s*};') and v4225.stdout is match('log\\s*{\\s*source\\(net\\);\\s*destination\\(\\w+\\);\\s*};')}) }}"
 - name: 4.2.3 Ensure rsyslog or syslog-ng is installed (Scored)
   block:
     - name: 4.2.3 Ensure rsyslog or syslog-ng is installed [query RPM rsyslog]
@@ -118,7 +118,7 @@
     - set_fact:
         results: '{{ results|combine({"4.2.4 Ensure permissions on all logfiles are configured (Scored)": v424.stdout_lines|select("match", "-rw[x-][r-][-]{5}")|count==v424.stdout_lines|length}) }}'
 - name: 4.3 Ensure logrotate is configured (Not Scored)
-  bloc:
+  block:
     - name: 4.3 Ensure logrotate is configured
       shell: "egrep '^[^#]' /etc/logrotate.conf /etc/logrotate.d/*"
       register: v43
