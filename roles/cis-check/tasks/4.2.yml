@@ -1,0 +1,130 @@
+---
+### 4.2.1 Configure rsyslog
+
+- name: 4.2.1.1 Ensure rsyslog Service is enabled (Scored)
+  block:
+    - name: 4.2.1.1 Ensure rsyslog Service is enabled
+      shell: "systemctl is-enabled rsyslog"
+      register: v4211
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.1.1 Ensure rsyslog Service is enabled (Scored)": "enabled" in v4211.stdout}) }}'
+- name: 4.2.1.2 Ensure logging is configured (Not Scored)
+  block:
+    - name: 4.2.1.2 Ensure logging is configured [rsyslog.conf]
+      shell: 'egrep "^[^#]" /etc/rsyslog.conf'
+      ignore_errors: true
+      register: v4212_1
+    - name: 4.2.1.2 Ensure logging is configured [rsyslog.d]
+      shell: 'egrep "^[^#]" /etc/rsyslog.d/*.conf'
+      register: v4212_2
+      ignore_errors: true
+    - name: 4.2.1.2 Ensure logging is configured [logs are written at /var/log/]
+      shell: "ls -l /var/log/ | awk '{ print $5 }'"
+      register: v4212_3
+    - set_fact:
+        results: '{{ results|combine({"": v4212_1.stdout_lines|length>0 and v4212_2.stdout_lines|length>0 and v4212_3.stdout_lines|select("equalto", "0")|count<v4212_3.stdout_lines|length}) }}'
+- name: 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
+  block:
+    - name: 4.2.1.3 Ensure rsyslog default file permissions configured [count rsyslog conf files]
+      shell: "ls -l /etc/rsyslog.conf /etc/rsyslog.d/*.conf"
+      register: v4213_1
+    - name: 4.2.1.3 Ensure rsyslog default file permissions configured
+      shell: 'grep ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
+      register: v4213_2
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.1.3 Ensure rsyslog default file permissions configured (Scored)": v4213_2.stdout_lines|select("match", "\$FileCreateMode\s*0[64][40]0")|count==v4213_1.stdout_lines|length}) }}'
+- name: 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host (Scored)
+  block:
+    - name: 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host [count rsyslog conf files]
+      shell: "ls -l /etc/rsyslog.conf /etc/rsyslog.d/*.conf"
+      register: v4214_1
+    - name: 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host
+      shell: 'grep "^\*\.\*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
+      register: v4214_2
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host (Scored)": v4214_2.stdout_lines|select("search", "\*\.\*\s*@@\S*")|count==v4214_1.stdout_lines|length}) }}'
+- name: 4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)
+  block:
+    - name: 4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts. [ModLoad imtcp]
+      shell: "grep '^\\$ModLoad imtcp' /etc/rsyslog.conf /etc/rsyslog.d/*.conf"
+      register: v4215_2
+      ignore_errors: true
+    - name: 4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts. [InputSeverRun]
+      shell: "grep '^\\$InputTCPServerRun' /etc/rsyslog.conf /etc/rsyslog.d/*.conf"
+      register: v4215_3
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)": (v4215_2.stdout_lines|length==0 and v4215_3.stdout_lines|length==0 and not hostvars[inventory_hostname]["rsyslog_log_host"]|bool) or (v4215_2.stdout is match("\$ModLoad\s*imtcp") and v4215_3.stdout is match("\$InputTCPServerRun\s*514") and hostvars[inventory_hostname]["rsyslog_log_host"]|bool) }) }}'
+- name: 4.2.2.1 Ensure syslog-ng service is enabled (Scored)
+  block:
+    - name: 4.2.2.1 Ensure syslog-ng service is enabled
+      shell: "systemctl is-enabled syslog-ng"
+      register: v4221
+      ignore_errors: true
+    - set_fact:
+        results: "{{ results|combine({'4.2.2.1 Ensure syslog-ng service is enabled (Scored)': 'enabled' in v4221.stdout}) }}"
+- name: 4.2.2.2 Ensure logging is configured (Not Scored)
+  block:
+    - name: 4.2.2.2 Ensure logging is configured
+      shell: 'egrep "^[^#]" /etc/syslog-ng/syslog-ng.conf'
+      register: v4222
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine("4.2.2.2 Ensure logging is configured (Not Scored)": v4222.stdout_lines|length>0) }}'
+- name: 4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)
+  block:
+    - name: 4.2.2.3 Ensure syslog-ng default file permissions configured
+      shell: 'grep ^options /etc/syslog-ng/syslog-ng.conf'
+      register: v4223
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)": v4223.stdout is match("perm\(0[64][40]0\)")}) }}'
+- name: 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)
+  block:
+    - name:
+      shell: 'cat /etc/syslog-ng/syslog-ng.conf'
+      register: v4224
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)": not hostvars[inventory_hostname]["syslog_ng_client"]|bool and v4224..stdout is search("destination\s*\w+\s*{\s*tcp\(\"\S+\"\s*port\(\d+\)\);\s*};")}) and v4224.stdout is search("log\s*{\s*source\(\w+\);\s*destination\(\w+\);\s*};")}) }}'
+- name: 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)
+  block:
+    - name:
+      shell: "cat /etc/syslog-ng/syslog-ng.conf"
+      register: v4225
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)": hostvars[inventory_hostname]["syslog_ng_log_host"]|bool and v4225.stdout is match("source\s*net{\s*tcp\(\);\s*};") and v4225.stdout is match("destination\s*\w+\s*{\s*file\(\"*\${FULLHOST}*\"\);\s*};") and v4225.stdout is match("log\s*{\s*source\(net\);\s*destination\(\w+\);\s*};")}) }}'
+- name: 4.2.3 Ensure rsyslog or syslog-ng is installed (Scored)
+  block:
+    - name: 4.2.3 Ensure rsyslog or syslog-ng is installed [query RPM rsyslog]
+      shell: "rpm -q rsyslog"
+      ignore_errors: true
+      register: v423_1
+    - name: 4.2.3 Ensure rsyslog or syslog-ng is installed [query RPM syslog-ng]
+      shell: "rpm -q syslog-ng"
+      register: v423_2
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.2.3 Ensure rsyslog or syslog-ng is installed (Scored)": v423_1.stdout is match("rsyslog-\S+") or v423.stdout is match("syslog-ng-\S+")}) }}'
+- name: 4.2.4 Ensure permissions on all logfiles are configured (Scored)
+  block:
+    - name: 4.2.4 Ensure permissions on all logfiles are configured
+      shell:  "find /var/log -type f -ls | awk '{print $3}'"
+      register: v424
+    - set_fact:
+        results: '{{ results|combine({"4.2.4 Ensure permissions on all logfiles are configured (Scored)": v424.stdout_lines|select("match", "-rw[x-][r-][-]{5}")|count==v424.stdout_lines|length}) }}'
+- name: 4.3 Ensure logrotate is configured (Not Scored)
+  bloc:
+    - name: 4.3 Ensure logrotate is configured
+      shell: "egrep '^[^#]' /etc/logrotate.conf /etc/logrotate.d/*"
+      register: v43
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"4.3 Ensure logrotate is configured (Not Scored)": v43.stdout_lines|length>0}) }}'
+
+
+

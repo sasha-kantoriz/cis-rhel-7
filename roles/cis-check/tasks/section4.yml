@@ -5,3 +5,7 @@
   tags:
     - sub4_1
     - s4
+- import_tasks: 4.2.yml
+  tags:
+    - sub4_2
+    - s4

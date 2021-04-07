@@ -44,5 +44,8 @@ To build environment:
 - place SSH-Key for remote hosts, should be world readable (`hosts`)
 - docker run --rm -it -v `pwd`/ssh-key:/ssh-key -v `pwd`/hosts:/hosts cis-hardening 'eval `ssh-agent`; ssh-add /ssh-key; ansible-playbook playbook.yml -i hosts [--tags \<commaSeparatedTagsList>]'
 
+Inventore file consists of two groups:
+- log host servers: used for centralizion of logs collection
+- log clients: send logs to remote centralized log hosts
 
 Logs/benchmarking data are collected on remote hosts, for now. Future releases will add local to ansible server directory (eg. `data-export`) as docker bind mounted volume.
