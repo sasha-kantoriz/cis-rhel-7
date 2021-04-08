@@ -5,28 +5,22 @@
   block:
     - name: 5.3.1 Ensure password creation requirements are configured [password-auth]
       shell: 'grep pam_pwquality.so /etc/pam.d/password-auth'
-
-
       register: v531_1
       ignore_errors: true
     - name: 5.3.1 Ensure password creation requirements are configured [system-auth]
       shell: 'grep pam_pwquality.so /etc/pam.d/system-auth'
-
       register: v531_2
       ignore_errors: true
     - name: 5.3.1 Ensure password creation requirements are configured [password must be <NUM> characters or more]
       shell: 'grep ^minlen /etc/security/pwquality.conf'
-
       register: v531_3
       ignore_errors: true
     - name: 5.3.1 Ensure password creation requirements are configured [contains at least <NUM> digit(s)]
       shell: 'grep ^dcredit /etc/security/pwquality.conf'
-
       register: v531_4
       ignore_errors: true
     - name: 5.3.1 Ensure password creation requirements are configured [contains at least <NUM> uppercase character(s)]
       shell: 'grep ^lcredit /etc/security/pwquality.conf'
-
       register: v531_5
       ignore_errors: true
     - name: 5.3.1 Ensure password creation requirements are configured [contains at least <NUM> special character(s)]
@@ -35,11 +29,10 @@
       register: v531_6
     - name: 5.3.1 Ensure password creation requirements are configured [contains at least <NUM> lowercase character(s)]
       shell: 'grep ^ucredit /etc/security/pwquality.conf'
-
       register: v531_7
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"5.3.1 Ensure password creation requirements are configured (Scored)": v531_1.stdout is match("password\s*requisite\s*pam_pwquality\.so\s*try_first_pass\s*retry=[0-3]\s*") and v531_2.stdout is match("password\s*requisite\s*pam_pwquality\.so\s*try_first_pass\s*retry=[0-3]\s*") and v531_3.stdout is match("minlen\s*=\s*1[4-9]|[2-9]\d{1,}") and v531_4.stdout is match("dcredit\s*=\s*-1") and v531_5.stdout is match("lcredit\s*=\s*-1") and v531_6.stdout is match("ocredit\s*=\s*-1") and v531_7.stdout is match("ucredit\s*=\s*-1")}) }}'
+        results: '{{ results|combine({"5.3.1 Ensure password creation requirements are configured (Scored)": v531_1.stdout is match("password\s*requisite\s*pam_pwquality\.so\s*try_first_pass\s*retry=[0-3]\s*") and v531_2.stdout is match("password\s*requisite\s*pam_pwquality\.so\s*try_first_pass\s*retry=[0-3]\s*") and v531_3.stdout is match("minlen\s*=\s*(1[4-9]|[2-9]\d{1,})") and v531_4.stdout is match("dcredit\s*=\s*-1") and v531_5.stdout is match("lcredit\s*=\s*-1") and v531_6.stdout is match("ocredit\s*=\s*-1") and v531_7.stdout is match("ucredit\s*=\s*-1")}) }}'
 - name: 5.3.2 Ensure lockout for failed password attempts is configured (Scored)
   block:
     - name: 5.3.2 Ensure lockout for failed password attempts is configured [password-auth]
@@ -63,14 +56,13 @@
       register: v533_2
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"5.3.3 Ensure password reuse is limited (Scored)": v532_1.stdout_lines|select("search", "remember\s*=\s*[5-9]|\d{2,}")==v532_1.stdout_lines|length and v532_2.stdout_lines|select("search", "remember\s*=\s*[5-9]|\d{2,}")|count==v532_2.stdout_lines|length}) }}'
+        results: '{{ results|combine({"5.3.3 Ensure password reuse is limited (Scored)": v532_1.stdout_lines|select("search", "remember\s*=\s*([5-9]|\d{2,})")==v532_1.stdout_lines|length and v532_2.stdout_lines|select("search", "remember\s*=\s*([5-9]|\d{2,})")|count==v532_2.stdout_lines|length}) }}'
 - name: 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored)
   block:
     - name: 5.3.4 Ensure password hashing algorithm is SHA-512 [password-auth]
       shell: 'egrep "^password\s+sufficient\s+pam_unix.so" /etc/pam.d/password-auth'
       register: v534_1
       ignore_errors: true
-
     - name: 5.3.4 Ensure password hashing algorithm is SHA-512 [system-auth]
       shell: 'egrep "^password\s+sufficient\s+pam_unix.so" /etc/pam.d/system-auth'
       register: v534_2

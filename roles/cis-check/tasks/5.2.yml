@@ -108,7 +108,7 @@
       register: v5212_2
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)": v5212_1.stdout is match("ClientAliveInterval\s*[0-300]$") and v5212_2.stdout is match("ClientAliveCountMax\s*[0-3]$")}) }}'
+        results: '{{ results|combine({"5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)": v5212_1.stdout is match("ClientAliveInterval\s*(300|[1-2]\d{2}|[1-9]\d|\d)$") and v5212_2.stdout is match("ClientAliveCountMax\s*[0-3]$")}) }}'
 - name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
   block:
     - name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less
@@ -116,7 +116,7 @@
       register: v5213
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)": v5213.stdout is match("LoginGraceTime\s*[0-60]$")}) }}'
+        results: '{{ results|combine({"5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)": v5213.stdout is match("LoginGraceTime\s*(60|[1-5]\d|\d)$")}) }}'
 - name: 5.2.14 Ensure SSH access is limited (Scored)
   block:
     - name: 5.2.14 Ensure SSH access is limited [allowusers]
