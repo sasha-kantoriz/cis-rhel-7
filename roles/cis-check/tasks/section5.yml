@@ -12,3 +12,7 @@
   tags:
     - sub5_3
     - s5
+- import_tasks: 5.4.yml
+  tags:
+    - sub5_4
+    - s5

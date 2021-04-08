@@ -1,0 +1,115 @@
+---
+### 5.4 User Accounts and Environment
+
+- name: 5.4.1.1 Ensure password expiration is 365 days or less (Scored)
+  block:
+    - name: 5.4.1.1 Ensure password expiration is 365 days or less
+      shell: 'grep PASS_MAX_DAYS /etc/login.defs'
+
+      register: v5411
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.1.1 Ensure password expiration is 365 days or less (Scored)": v5411.stdout is match("PASS_MAX_DAYS\s+([7-9]$|\d{2,}$)")}) }}'
+- name: 5.4.1.2 Ensure minimum days between password changes is 7 or more (Scored)
+  block:
+    - name: 5.4.1.2 Ensure minimum days between password changes is 7 or more
+      shell: 'grep PASS_MIN_DAYS /etc/login.defs'
+
+      register: v5412
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"": v5412.stdout is match("PASS_MIN_DAYS\s*[7-9]|\d{2,}")}) }}'
+- name: 5.4.1.3 Ensure password expiration warning days is 7 or more (Scored)
+  block:
+    - name: 5.4.1.3 Ensure password expiration warning days is 7 or more
+      shell: 'grep PASS_WARN_AGE /etc/login.defs'
+
+      register: v5413
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.1.3 Ensure password expiration warning days is 7 or more (Scored)": v5413.stdout is match("PASS_WARN_AGE\s+([7-9]$|\d{2,}$)")}) }}'
+- name: 5.4.1.4 Ensure inactive password lock is 30 days or less (Scored)
+  block:
+    - name: 5.4.1.4 Ensure inactive password lock is 30 days or less
+      shell: 'useradd -D | grep INACTIVE'
+
+      register: v5414
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.1.4 Ensure inactive password lock is 30 days or less (Scored)": v5414.stdout is match("INACTIVE=([0-9]$|[1-2]\d$|30$)")}) }}'
+- name: 5.4.1.5 Ensure all users last password change date is in the past (Scored)
+  block:
+    - name: 5.4.1.5 Ensure all users last password change date is in the past [get users list]
+      shell: 'cat /etc/shadow | cut -d: -f1'
+      register: v5415_1
+    - name: 5.4.1.5 Ensure all users last password change date is in the past
+      shell: "chage --list {{ item }}|grep 'Last password change'|awk -F': ' '{print $NF}'"
+      register: v5415_2
+      with_items: '{{ v5415_1.stdout_lines }}'
+    - set_fact:
+        v5415_3: '{{ v5415_2.results|map(attribute="stdout")|list }}'
+    - set_fact:
+        result: '{{ "never" in item or ((ansible_date_time.date|to_datetime("%Y-%m-%d")  - item|to_datetime("%b %d, %Y")).total_seconds() >= 0) }}'
+      with_items: '{{ v5415_3 }}'
+      register: v5415_4
+    - set_fact:
+        results: '{{ results|combine({"5.4.1.5 Ensure all users last password change date is in the past (Scored)": v5415_4.results|selectattr("ansible_facts", "defined")|map(attribute="ansible_facts.result")|list|select("true")|count==v5415_4.results|length}) }}'
+- name: 5.4.2 Ensure system accounts are non-login (Scored)
+  block:
+    - name: 5.4.2 Ensure system accounts are non-login
+      shell: "egrep -v '^\\+' /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
+      register: v542
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.2 Ensure system accounts are non-login (Scored)": v542.stdout_lines|length==0}) }}'
+- name: 5.4.3 Ensure default group for the root account is GID 0 (Scored)
+  block:
+    - name: 5.4.3 Ensure default group for the root account is GID 0
+      shell: 'grep "^root:" /etc/passwd | cut -f4 -d:'
+      register: v543
+    - set_fact:
+        results: '{{ results|combine({"5.4.3 Ensure default group for the root account is GID 0 (Scored)": v543.stdout is match("0")}) }}'
+- name: 5.4.4 Ensure default user umask is 027 or more restrictive (Scored)
+  block:
+    - name: 5.4.4 Ensure default user umask is 027 or more restrictive
+      shell: 'grep "umask" /etc/bashrc /etc/profile /etc/profile.d/*.sh'
+      register: v544
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.4 Ensure default user umask is 027 or more restrictive (Scored)": v544.stdout_lines|select("match", "umask\s+0[27]7")|count==v544.stdout_lines|length}) }}'
+- name: 5.4.5 Ensure default user shell timeout is 900 seconds or less (Scored)
+  block:
+    - name: 5.4.5 Ensure default user shell timeout is 900 seconds or less [/etc/bashrc]
+      shell: 'grep "^TMOUT" /etc/bashrc'
+
+      register: v545_1
+      ignore_errors: true
+    - name: 5.4.5 Ensure default user shell timeout is 900 seconds or less [/etc/profile]
+      shell: 'grep "^TMOUT" /etc/profile'
+
+      register: v545_2
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"5.4.5 Ensure default user shell timeout is 900 seconds or less (Scored)": (v545_1.stdout_lines|length>0 and v545_1.stdout_lines|select("match", "TMOUT=(\d$|[1-9]\d$|[1-8]\d{2}$|900$)")==v545_1.stdout_lines|length) and (v5454_2.stdout_lines|length>0 and v545_2.stdout_lines|select("match", "TMOUT=([1-9]$|\d{2}$|[1-8]\d{2}$|900$)")==v545_2.stdout_lines|length)}) }}'
+- name: 5.5 Ensure root login is restricted to system console (Not Scored)
+  block:
+    - name: 5.5 Ensure root login is restricted to system console
+      shell:  'cat /etc/securetty'
+      register: v55
+    - debug:
+        msg: "{{ v55.stdout_lines }}"
+    - set_fact:
+        results: '{{ results|combine({"5.5 Ensure root login is restricted to system console (Not Scored)": v55.stdout_lines|length>0}) }}'
+- name: 5.6 Ensure access to the su command is restricted (Scored)
+  block:
+    - name: 5.6 Ensure access to the su command is restricted [/etc/pam.d/su]
+      shell: 'grep pam_wheel.so /etc/pam.d/su'
+
+      register: v56_1
+      ignore_errors: true
+    - name: 5.6 Ensure access to the su command is restricted [/etc/group]
+      shell: 'grep wheel /etc/group'
+
+      register: v56_2
+    - set_fact:
+        results: '{{ results|combine({"5.6 Ensure access to the su command is restricted (Scored)": v56_1.stdout is search("auth\s+required\s+pam_wheel\.so\s+use_uid") and v56_2.stdout is match("wheel:x:10:\S+")}) }}'
