@@ -34,7 +34,7 @@
       shell: "stat /etc/motd"
       register: v1714_output
     - set_fact:
-        results: "{{ results|combine({'1.7.1.4 Ensure permissions on /etc/motd are configured (Not Scored)': v1714_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.4 Ensure permissions on /etc/motd are configured (Not Scored)': v1714_output.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
 
 - name: 1.7.1.5 Ensure permissions on /etc/issue are configured (Not Scored)
   block:
@@ -42,7 +42,7 @@
       shell: "stat /etc/issue"
       register: v1715_output
     - set_fact:
-        results: "{{ results|combine({'1.7.1.5 Ensure permissions on /etc/issue are configured (Not Scored)': v1715_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.5 Ensure permissions on /etc/issue are configured (Not Scored)': v1715_output.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
 
 - name: 1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)
   block:
@@ -50,7 +50,7 @@
       shell: "stat /etc/issue"
       register: v1716_output
     - set_fact:
-        results: "{{ results|combine({'1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)': v1716_output.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+        results: "{{ results|combine({'1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)': v1716_output.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
 
 - name: 1.7.2 Ensure GDM login banner is configured (Scored)
   block:

@@ -36,7 +36,7 @@
       ignore_errors: true
       register: v344
     - set_fact:
-        results: "{{ results|combine({'3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)': v344.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+        results: "{{ results|combine({'3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)': v344.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
 - name: 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
   block:
     - name: 3.4.5 Ensure permissions on /etc/hosts.deny are configured
@@ -44,5 +44,5 @@
       ignore_errors: true
       register: v345
     - set_fact:
-        results: "{{ results|combine({'3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)': v345.stdout is match('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+        results: "{{ results|combine({'3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)': v345.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
 
