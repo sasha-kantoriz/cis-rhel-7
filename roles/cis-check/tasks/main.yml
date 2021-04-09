@@ -5,4 +5,5 @@
 - import_tasks: section3.yml
 - import_tasks: section4.yml
 - import_tasks: section5.yml
+- import_tasks: section6.yml
 - import_tasks: results.yml
