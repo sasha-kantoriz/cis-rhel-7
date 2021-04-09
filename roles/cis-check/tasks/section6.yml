@@ -4,3 +4,7 @@
   tags:
     - sub6_1
     - s6
+- import_tasks: 6.2.yml
+  tags:
+    - sub6_2
+    - s6
