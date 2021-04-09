@@ -1,0 +1,119 @@
+---
+### 6.1 System File Permissions
+
+- name: 6.1.1 Audit system file permissions (Not Scored)
+  block:
+    - name: 6.1.1 Audit system file permissions
+      shell: 'rpm -Va --nomtime --nosize --nomd5 --nolinkto'
+      register: v611
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"6.1.1 Audit system file permissions (Not Scored)": v611.stdout_lines|length==0}) }}'
+- name: 6.1.2 Ensure permissions on /etc/passwd are configured (Scored)
+  block:
+    - name: 6.1.2 Ensure permissions on /etc/passwd are configured
+      shell: 'stat /etc/passwd'
+
+      register: v612
+    - set_fact:
+        results: '{{ results|combine({"6.1.2 Ensure permissions on /etc/passwd are configured (Scored)": v611.stdout is search("Access:\s+\(0644\/-rw-r--r--\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.3 Ensure permissions on /etc/shadow are configured (Scored)
+  block:
+    - name: 6.1.3 Ensure permissions on /etc/shadow are configured
+      shell: 'stat /etc/shadow'
+
+      register: v613
+    - set_fact:
+        results: '{{ results|combine({"6.1.3 Ensure permissions on /etc/shadow are configured (Scored)": v613.stdout is search("Access:\s+\(0000\/----------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.4 Ensure permissions on /etc/group are configured (Scored)
+  block:
+    - name: 6.1.4 Ensure permissions on /etc/group are configured
+      shell: 'stat /etc/group'
+
+      register: v614
+    - set_fact:
+        results: '{{ results|combine({"6.1.4 Ensure permissions on /etc/group are configured (Scored)": v614.stdout is search("Access:\s+\(0644\/-rw-r--r--\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)
+  block:
+    - name: 6.1.5 Ensure permissions on /etc/gshadow are configured
+      shell: 'stat /etc/gshadow'
+
+      register: v615
+    - set_fact:
+        results: '{{ results|combine({"6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)": v615.stdout is search("Access:\s+\(0000\/----------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
+  block:
+    - name: 6.1.6 Ensure permissions on /etc/passwd- are configured
+      shell: 'stat /etc/passwd'
+
+      register: v616
+    - set_fact:
+        results: '{{ results|combine({"6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)": v616.stdout is search("Access:\s+\(0644\/-rw-------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
+  block:
+    - name: 6.1.7 Ensure permissions on /etc/shadow- are configured
+      shell:  stat /etc/shadow
+
+      register: v617
+    - set_fact:
+        results: '{{ results|combine({"6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)": v617.stdout is search("Access:\s+\(0000\/----------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
+  block:
+    - name: 6.1.8 Ensure permissions on /etc/group- are configured
+      shell: stat /etc/group
+
+      register: v618
+    - set_fact:
+        results: '{{ results|combine({"6.1.8 Ensure permissions on /etc/group- are configured (Scored)": v618.stdout is search("Access:\s+\(0644\/-rw-------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
+  block:
+    - name: 6.1.9 Ensure permissions on /etc/gshadow- are configured
+      shell: stat /etc/gshadow
+
+      register: v619
+    - set_fact:
+        results: '{{ results|combine({"6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)": v619.stdout is search("Access:\s+\(0000\/----------\)\s+Uid:\s+\(\s*0\/\s+root\)\s+Gid:\s+\(\s*0\/\s+root\)")}) }}'
+- name: 6.1.10 Ensure no world writable files exist (Scored)
+  block:
+    - name: 6.1.10 Ensure no world writable files exist
+      shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
+      register: v6110
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"6.1.10 Ensure no world writable files exist (Scored)": v6110.stdout_lines|length==0}) }}'
+- name: 6.1.11 Ensure no unowned files or directories exist (Scored)
+  block:
+    - name: 6.1.11 Ensure no unowned files or directories exist
+      shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser"
+      register: v6111
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"6.1.11 Ensure no unowned files or directories exist (Scored)": v6111.stdout_lines|length==0}) }}'
+- name: 6.1.12 Ensure no ungrouped files or directories exist (Scored)
+  block:
+    - name: 6.1.12 Ensure no ungrouped files or directories exist (Scored)
+      shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup"
+      register: v6112
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"6.1.12 Ensure no ungrouped files or directories exist (Scored)": v6112.stdout_lines|length==0}) }}'
+- name: 6.1.13 Audit SUID executables (Not Scored)
+  block:
+    - name: 6.1.13 Audit SUID executables
+      shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -4000"
+      register: v6113
+      ignore_errors: true
+    - debug:
+        msg: '{{ v6113.stdout_lines }}'
+    - set_fact:
+        results: '{{ results|combine({"6.1.13 Audit SUID executables (Not Scored)": v6113.stdout_lines|length > 0}) }}'
+- name: 6.1.14 Audit SGID executables (Not Scored)
+  block:
+    - name: 6.1.14 Audit SGID executables (Not Scored)
+      shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -2000"
+      register: v6114
+      ignore_errors: true
+    - debug:
+        msg: '{{ v6114.stdout_lines }}'
+    - set_fact:
+        results: '{{ results|combine({"6.1.14 Audit SGID executables (Not Scored)": v6114.stdout_lines|length>0}) }}'
