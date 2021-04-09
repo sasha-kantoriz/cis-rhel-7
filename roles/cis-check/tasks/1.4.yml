@@ -7,7 +7,7 @@
       shell: "stat /boot/grub2/grub.cfg"
       register: v141_output
     - set_fact:
-        results: "{{ results|combine({'1.4.1 Ensure permissions on bootloader config are configured (Scored)': v141_output.stdout|regex_findall('Access:\\s*\\(0[1,2,4,6,7]00')|count!=0 and v141_output.stdout|regex_findall('Uid:\\s*\\(\\s*0\\/\\s*root\\s*\\)\\s*Gid:\\s*\\(\\s*0\\/\\s*root\\s*\\)')|count!=0}) }}"
+        results: "{{ results|combine({'1.4.1 Ensure permissions on bootloader config are configured (Scored)': v141_output.stdout is search('Access:\\s*\\(0[1,2,4,6,7]00\s+Uid:\\s*\\(\\s*0\\/\\s*root\\s*\\)\\s*Gid:\\s*\\(\\s*0\\/\\s*root\\s*\\)')}) }}"
 
 - name: 1.4.2 Ensure bootloader password is set (Scored)
   block:
