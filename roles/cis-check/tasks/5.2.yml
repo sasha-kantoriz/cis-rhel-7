@@ -8,7 +8,7 @@
       register: v521
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)": v521.stdout is match("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") }) }}'
+        results: '{{ results|combine({"5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)": v521.stdout is search("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") }) }}'
 - name: 5.2.2 Ensure SSH Protocol is set to 2 (Scored)
   block:
     - name: 5.2.2 Ensure SSH Protocol is set to 2
