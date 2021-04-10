@@ -45,9 +45,9 @@
       register: v11132
     - set_fact:
         results: "{{ results|combine({'1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Scored)': ('install /bin/true' in v11131.stdout or v11131.stdout_lines|length==0) and v11132.stdout_lines|length==0}) }}"
- tags:
-   - level1_server
-   - level1_workstation
+  tags:
+    - level1_server
+    - level1_workstation
 
 - name: 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored)
   block:
