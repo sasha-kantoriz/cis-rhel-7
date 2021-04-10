@@ -36,7 +36,7 @@
         v363_11: '{{ v363_1.stdout_lines|select("match", "\S+\s*\S+\s*ACCEPT\s*all\s*--\s*lo\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0")|list }}'
     - set_fact:
         v363_12: '{{ v363_1.stdout_lines|select("match", "\S+\s*\S+\s*(DROP|REJECT)\s*all\s*--\s*\*\s*\*\s*127\.0\.0\.0\/8\s*0\.0\.0\.0\/0")|list }}'
-    - name: 3.6.3 Ensure loopback traffic is configured [OUPUT chain]
+    - name: 3.6.3 Ensure loopback traffic is configured [OUTPUT chain]
       shell: "iptables -L OUTPUT -v -n"
       register: v363_2
       ignore_errors: true
