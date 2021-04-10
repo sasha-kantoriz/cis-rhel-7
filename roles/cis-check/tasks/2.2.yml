@@ -72,3 +72,248 @@
         results: '{{ results|combine({"2.2.2 Ensure X Window System is not installed (Scored)": v222.stdout_lines|length==0}) }}'
   tags:
     - level1_server
+
+- name: 2.2.3 Ensure Avahi Server is not enabled (Scored)
+  block:
+    - name: 2.2.3 Ensure Avahi Server is not enabled
+      shell: 'systemctl is-enabled avahi-daemon'
+      register: v223
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.3 Ensure Avahi Server is not enabled (Scored)": "disabled" in v223.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.4 Ensure CUPS is not enabled (Scored)
+  block:
+    - name: 2.2.4 Ensure CUPS is not enabled
+      shell: 'systemctl is-enabled cups'
+      register: v224
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.4 Ensure CUPS is not enabled (Scored)": "disabled" in v224.stdout}) }}'
+  tags:
+    - level1_server
+    - level2_workstation
+
+- name: 2.2.5 Ensure DHCP Server is not enabled (Scored)
+  block:
+    - name: 2.2.5 Ensure DHCP Server is not enabled
+      shell: 'systemctl is-enabled dhcpd'
+      register: v225
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.5 Ensure DHCP Server is not enabled (Scored)": "disabled"}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.6 Ensure LDAP server is not enabled (Scored)
+  block:
+    - name: 2.2.6 Ensure LDAP server is not enabled
+      shell: 'systemctl is-enabled slapd'
+      register: v226
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.6 Ensure LDAP server is not enabled (Scored)": "disabled" in v226.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.7 Ensure NFS and RPC are not enabled (Scored)
+  block:
+    - name: 2.2.7 Ensure NFS and RPC are not enabled
+      shell: 'systemctl is-enabled nfs'
+      register: v227_1
+      ignore_errors: true
+    - name: 2.2.7 Ensure NFS and RPC are not enabled
+      shell: 'systemctl is-enabled nfs-server'
+      register: v227_2
+      ignore_errors: true
+    - name: 2.2.7 Ensure NFS and RPC are not enabled
+      shell: 'systemctl is-enabled rpcbind'
+      register: v227_3
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.7 Ensure NFS and RPC are not enabled (Scored)": "disabled" in v227_1.stdout and "disabled" in v227_2.stdout and "disabled" in v227_3.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.8 Ensure DNS Server is not enabled (Scored)
+  block:
+    - name: 2.2.8 Ensure DNS Server is not enabled
+      shell: 'systemctl is-enabled named'
+      register: v228
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.8 Ensure DNS Server is not enabled (Scored)": "disabled" in v228.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.9 Ensure FTP Server is not enabled (Scored)
+  block:
+    - name: 2.2.9 Ensure FTP Server is not enabled
+      shell: 'systemctl is-enabled vsftpd'
+      register: v229
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.9 Ensure FTP Server is not enabled (Scored)": "disabled" in v229.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.10 Ensure HTTP server is not enabled (Scored)
+  block:
+    - name: 2.2.10 Ensure HTTP server is not enabled
+      shell: 'systemctl is-enabled httpd'
+      register: v2210
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.10 Ensure HTTP server is not enabled (Scored)": "disabled" in v2210.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)
+  block:
+    - name: 2.2.11 Ensure IMAP and POP3 server is not enabled
+      shell: 'systemctl is-enabled dovecot'
+
+      register: v2211
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)": "disabled" in v2211.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.12 Ensure Samba is not enabled (Scored)
+  block:
+    - name: 2.2.12 Ensure Samba is not enabled
+      shell: 'systemctl is-enabled smb'
+      register: v2212
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.12 Ensure Samba is not enabled (Scored)": "disabled" in v2212.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.13 Ensure HTTP Proxy Server is not enabled (Scored)
+  block:
+    - name: 2.2.13 Ensure HTTP Proxy Server is not enabled
+      shell: systemctl is-enabled squid
+      register: v2213
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.13 Ensure HTTP Proxy Server is not enabled (Scored)": "disabled" in v2213.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.14 Ensure SNMP Server is not enabled (Scored)
+  block:
+    - name: 2.2.14 Ensure SNMP Server is not enabled
+      shell: 'systemctl is-enabled snmpd'
+      register: v2214
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.14 Ensure SNMP Server is not enabled (Scored)": "disabled" in v2214.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.15 Ensure mail transfer agent is configured for local-only mode (Scored)
+  block:
+    - name: 2.2.15 Ensure mail transfer agent is configured for local-only mode
+      shell: 'netstat -an | grep LIST | grep ":25[[:space:]]"'
+      register: v2215
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.15 Ensure mail transfer agent is configured for local-only mode (Scored)": v2215.stdout is match("tcp\s+\d+\s+\d+\s+(127\.0\.0\.1|::1|localhost):25\s+0\.0\.0\.0:\*\s+LISTEN")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.16 Ensure NIS Server is not enabled (Scored)
+  block:
+    - name: 2.2.16 Ensure NIS Server is not enabled
+      shell: 'systemctl is-enabled ypserv'
+      register: v2216
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.16 Ensure NIS Server is not enabled (Scored)": "disabled" in v2216.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.17 Ensure rsh server is not enabled (Scored)
+  block:
+    - name: 2.2.17 Ensure rsh server is not enabled [rsh]
+      shell: 'systemctl is-enabled rsh.socket'
+      register: v2217_1
+      ignore_errors: true
+    - name:  2.2.17 Ensure rsh server is not enabled [rlogin]
+      shell: 'systemctl is-enabled rlogin.socket'
+      register: v2217_2
+      ignore_errors: true
+    - name: 2.2.17 Ensure rsh server is not enabled [rexec]
+      shell: 'systemctl is-enabled rexec.socket'
+      register: v2217_3
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.17 Ensure rsh server is not enabled (Scored)": "disabled" in v2217_1.stdout and "disabled" in v2217_2.stdout and "disabled" in v2217_3.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.18 Ensure talk server is not enabled (Scored)
+  block:
+    - name: 2.2.18 Ensure talk server is not enabled
+      shell: 'systemctl is-enabled ntalk'
+      register: v2218
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.18 Ensure talk server is not enabled (Scored)": "disabled" in v2218.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.19 Ensure telnet server is not enabled (Scored)
+  block:
+    - name: 2.2.19 Ensure telnet server is not enabled
+      shell: 'systemctl is-enabled telnet.socket'
+      register: v2219
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.19 Ensure telnet server is not enabled (Scored)": "disabled" in v2219.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.20 Ensure tftp server is not enabled (Scored)
+  block:
+    - name: 2.2.20 Ensure tftp server is not enabled
+      shell: 'systemctl is-enabled tftp.socket'
+      register: v2220
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.20 Ensure tftp server is not enabled (Scored)": "disabled" in v2220.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
+- name: 2.2.21 Ensure rsync service is not enabled (Scored)
+  block:
+    - name: 2.2.21 Ensure rsync service is not enabled
+      shell: 'systemctl is-enabled rsyncd'
+      register: v2221
+      ignore_errors: true
+    - set_fact:
+        results: '{{ results|combine({"2.2.21 Ensure rsync service is not enabled (Scored)": "disabled" in v2221.stdout}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
