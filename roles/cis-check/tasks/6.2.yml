@@ -8,6 +8,10 @@
       register: v621
     - set_fact:
         results: '{{ results|combine({"6.2.1 Ensure password fields are not empty (Scored)": v621.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
   block:
     - name: 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd
@@ -16,6 +20,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)": v621.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.3 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
   block:
     - name: 6.2.3 Ensure no legacy "+" entries exist in /etc/shadow
@@ -24,6 +32,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"6.2.3 Ensure no legacy "+" entries exist in /etc/shadow (Scored)": v623.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.4 Ensure no legacy "+" entries exist in /etc/group (Scored)
   block:
     - name: 6.2.4 Ensure no legacy "+" entries exist in /etc/group
@@ -32,6 +44,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"6.2.4 Ensure no legacy "+" entries exist in /etc/group (Scored)": v624.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.5 Ensure root is the only UID 0 account (Scored)
   block:
     - name: 6.2.5 Ensure root is the only UID 0 account
@@ -40,6 +56,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"6.2.5 Ensure root is the only UID 0 account (Scored)": v625.stdout is match("root")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.6 Ensure root PATH Integrity (Scored)
   block:
     - name: 6.2.6 Ensure root PATH Integrity
@@ -47,6 +67,10 @@
       register: v626
     - set_fact:
         results: '{{ results|combine({"6.2.6 Ensure root PATH Integrity (Scored)": v626.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.7 Ensure all users' home directories exist (Scored)
   block:
     - name: 6.2.7 Ensure all users' home directories exist
@@ -54,6 +78,10 @@
       register: v627
     - set_fact:
         results: "{{ results|combine({\"6.2.7 Ensure all users' home directories exist (Scored)\": v627.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.8 Ensure users' home directories permissions are 750 or more restrictive (Scored)
   block:
     - name: 6.2.8 Ensure users' home directories permissions are 750 or more restrictive
@@ -61,6 +89,10 @@
       register: v628
     - set_fact:
         results: "{{ results|combine({\"6.2.8 Ensure users' home directories permissions are 750 or more restrictive (Scored)\": v628.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.9 Ensure users own their home directories (Scored)
   block:
     - name: 6.2.9 Ensure users own their home directories
@@ -68,6 +100,10 @@
       register: v629
     - set_fact:
         results: '{{ results|combine({"6.2.9 Ensure users own their home directories (Scored)": v629.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.10 Ensure users' dot files are not group or world writable (Scored)
   block:
     - name: 6.2.10 Ensure users' dot files are not group or world writable
@@ -75,6 +111,10 @@
       register: v6210
     - set_fact:
         results: "{{ results|combine({\"6.2.10 Ensure users' dot files are not group or world writable (Scored)\": v6210.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.11 Ensure no users have .forward files (Scored)
   block:
     - name: 6.2.11 Ensure no users have .forward files
@@ -82,6 +122,10 @@
       register: v6211
     - set_fact:
         results: '{{ results|combine({"6.2.11 Ensure no users have .forward files (Scored)": v6211.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.12 Ensure no users have .netrc files (Scored)
   block:
     - name: 6.2.12 Ensure no users have .netrc files
@@ -89,6 +133,10 @@
       register: v6212
     - set_fact:
         results: '{{ results|combine({"6.2.12 Ensure no users have .netrc files (Scored)": v6212.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.13 Ensure users' .netrc Files are not group or world accessible (Scored)
   block:
     - name: 6.2.13 Ensure users' .netrc Files are not group or world accessible
@@ -96,6 +144,10 @@
       register: v6213
     - set_fact:
         results: "{{ results|combine({\"6.2.13 Ensure users' .netrc Files are not group or world accessible (Scored)\": v6213.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.14 Ensure no users have .rhosts files (Scored)
   block:
     - name: 6.2.14 Ensure no users have .rhosts files
@@ -103,6 +155,10 @@
       register: v6214
     - set_fact:
         results: '{{ results|combine({"6.2.14 Ensure no users have .rhosts files (Scored)": v6214.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.15 Ensure all groups in /etc/passwd exist in /etc/group (Scored)
   block:
     - name: 6.2.15 Ensure all groups in /etc/passwd exist in /etc/group
@@ -110,6 +166,10 @@
       register: v6215
     - set_fact:
         results: '{{ results|combine({"6.2.15 Ensure all groups in /etc/passwd exist in /etc/group (Scored)": v6215.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.16 Ensure no duplicate UIDs exist (Scored)
   block:
     - name: 6.2.16 Ensure no duplicate UIDs exist
@@ -117,6 +177,10 @@
       register: v6216
     - set_fact:
         results: '{{ results|combine({"6.2.16 Ensure no duplicate UIDs exist (Scored)": v6216.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.17 Ensure no duplicate GIDs exist (Scored)
   block:
     - name: 6.2.17 Ensure no duplicate GIDs exist
@@ -124,6 +188,10 @@
       register: v6217
     - set_fact:
         results: '{{ results|combine({"6.2.17 Ensure no duplicate GIDs exist (Scored)": v6217.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.18 Ensure no duplicate user names exist (Scored)
   block:
     - name: 6.2.18 Ensure no duplicate user names exist
@@ -131,6 +199,10 @@
       register: v6218
     - set_fact:
         results: '{{ results|combine({"6.2.18 Ensure no duplicate user names exist (Scored)": v6218.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 6.2.19 Ensure no duplicate group names exist (Scored)
   block:
     - name: 6.2.19 Ensure no duplicate group names exist
@@ -138,3 +210,6 @@
       register: v6219
     - set_fact:
         results: '{{ results|combine({"6.2.19 Ensure no duplicate group names exist (Scored)": v6219.stdout_lines|length==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
