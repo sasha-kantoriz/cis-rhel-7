@@ -35,7 +35,11 @@ According to [CIS guideline](https://www.cisecurity.org/cis-benchmarks/#red_hat_
 - - 6.2 User and Group Settings
 
 Each section (`1-6`) has got appropriate tags (`s1 - s6`), each subsection (eg. `1.1`) has got appropriate tags (`sub1_1`).
-
+Also availble:
+- Level 1 Server (`level1_server`)
+- Level 1 Workstation (`leve1_workstation`)
+- Level 2 Server (`level2_server`)
+- Level 2 Workstation (`level2_workstation`)
 
 To build environment:
 
