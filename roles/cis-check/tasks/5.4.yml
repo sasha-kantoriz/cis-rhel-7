@@ -99,7 +99,7 @@
     - debug:
         msg: "{{ v55.stdout_lines }}"
     - set_fact:
-        results: '{{ results|combine({"5.5 Ensure root login is restricted to system console (Not Scored)": v55.stdout_lines|length>0}) }}'
+        results: '{{ results|combine({"5.5 Ensure root login is restricted to system console (Not Scored)": v55.stdout_lines|length==0}) }}'
 - name: 5.6 Ensure access to the su command is restricted (Scored)
   block:
     - name: 5.6 Ensure access to the su command is restricted [/etc/pam.d/su]
