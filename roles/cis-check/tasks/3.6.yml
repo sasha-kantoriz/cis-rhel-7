@@ -10,6 +10,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.6.1 Ensure iptables is installed (Scored)': v361.stdout is match('iptables-\\S*')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.6.2 Ensure default deny firewall policy (Scored)
   block:
     - name: 3.6.2 Ensure default deny firewall policy
@@ -18,6 +22,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.6.2 Ensure default deny firewall policy (Scored)': v362.stdout is search('Chain\\s*INPUT\\s*\\(policy\\s*(DROP|REJECT)\\)') and v362.stdout is search('Chain\\s*FORWARD\\s*\\(policy\\s*(DROP|REJECT)\\)') and v362.stout is search('Chain\\s*OUTPUT\\s*\\(policy\\s*(DROP|REJECT)\\)')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.6.3 Ensure loopback traffic is configured (Scored)
   block:
     - name: 3.6.3 Ensure loopback traffic is configured [INPUT chain]
@@ -36,6 +44,10 @@
         v363_21: '{{ v363_2.stdout_lines|select("match", "\S+\s*\S+\s*ACCEPT\s*all\s*--\s*\*\s*lo\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0")|list }}'
     - set_fact:
         results: "{{ results|combine({'3.6.3 Ensure loopback traffic is configured (Scored)': v363_11|length==1 and v363_12|length==1 and v363_21|length==1 and (v363_1.stdout_lines.index(v363_11|first) < v363_1.stdout_lines.index(v363_12|first)) }) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.6.4 Ensure outbound and established connections are configured (Not Scored)
   block:
     - name: 3.6.4 Ensure outbound and established connections are configured [INPUT defaults]
@@ -46,6 +58,10 @@
       register: v364_2
     - set_fact:
         results: '{{ results|combine({"3.6.4 Ensure outbound and established connections are configured (Not Scored)": v364_1.stdout is match("\S+\s*\S+ACCEPT\s*all\s*--\s*\*\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0\s*ctstate\s*(RELATED,)?ESTABLISHED") and v364_2.stdout is match("\S+\s*\S+\s*OUTPUT\s*all\s*--\s*\*\s*\*\s*0\.0\.0\.0\/0\s*0\.0\.0\.0\/0(\s*)?(ctstate\s*)?(NEW)?(,)?(ESTABLISHED)?")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.6.5 Ensure firewall rules exist for all open ports (Scored)
   block:
     - name: 3.6.5 Ensure firewall rules exist for all open ports [list firewall INPUT chain]
@@ -63,3 +79,6 @@
       with_items: "{{ v365_2 }}"
     - set_fact:
         results: "{{ results|combine({'3.6.5 Ensure firewall rules exist for all open ports (Scored)': v365_33.results|selectattr('ansible_facts.result', 'equalto', false)|list|count==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation

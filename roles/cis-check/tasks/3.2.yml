@@ -19,6 +19,10 @@
       register: v321_4
     - set_fact:
         results: "{{ results|combine({'3.2.1 Ensure source routed packets are not accepted (Scored)': ('net.ipv4.conf.all.accept_source_route = 0' in v321_1.stdout or v321_3.stdout is match('net\\.ipv4\\.conf\\.all\\.accept_source_route\\s*=\\s*0')) and ('net.ipv4.conf.default.accept_source_route = 0' in v321_2.stdout or v321_4.stdout is match('net\\.ipv4\\.conf\\.default\\.accept_source_route\\s*=\\s*0'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.2 Ensure ICMP redirects are not accepted (Scored)
   block:
     - name: 3.2.2 Ensure ICMP redirects are not accepted [sysctl cli ipv4.conf.all]
@@ -37,6 +41,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.2.2 Ensure ICMP redirects are not accepted (Scored)': ('net.ipv4.conf.all.accept_redirects = 0' in v322_1.stdout or v322_3.stdout is match('net\\.ipv4\\.conf\\.all\\.accept_redirects\\s*=\\s*0')) and ('net.ipv4.conf.default.accept_redirects = 0' in v322_2.stdout or v322_4.stdout is match('net\\.ipv4\\.conf\\.default\\.accept_redirects\\s*=\\s*0'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.3 Ensure secure ICMP redirects are not accepted (Scored)
   block:
     - name: 3.2.3 Ensure secure ICMP redirects are not accepted [sysctl cli ipv4.conf.all]
@@ -55,6 +63,10 @@
       register: v323_4
     - set_fact:
         results: "{{ results|combine({'3.2.3 Ensure secure ICMP redirects are not accepted (Scored)': ('net.ipv4.conf.all.secure_redirects = 0' in v323_1.stdout or v323_3.stdout is match('net\\.ipv4\\.conf\\.all\\.secure_redirects\\s*=\\s*0')) and ('net.ipv4.conf.default.secure_redirects = 0' in v323_2.stdout or v323_4.stdout is match('net\\.ipv4\\.conf\\.default\\.secure_redirects\\s*=\\s*0'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.4 Ensure suspicious packets are logged (Scored)
   block:
     - name: 3.2.4 Ensure suspicious packets are logged [sysctl cli ipv4.conf.all]
@@ -73,6 +85,10 @@
       register: v324_4
     - set_fact:
         results: "{{ results|combine({'3.2.4 Ensure suspicious packets are logged (Scored)': ('net.ipv4.conf.all.log_martians = 1' in v324_1.stdout or v324_3.stdout is match('net\\.ipv4\\.conf\\.all\\.log_martians\\s*=\\s*1')) and ('net.ipv4.conf.default.log_martians = 1' in v324_2.stdout or v324_4.stdout is match('net\\.ipv4\\.conf\\.default\\.log_martians\\s*=\\s*1'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.5 Ensure broadcast ICMP requests are ignored (Scored)
   block:
     - name: 3.2.5 Ensure broadcast ICMP requests are ignored [sysctl cli]
@@ -84,6 +100,10 @@
       register: v325_2
     - set_fact:
         results: "{{ results|combine({'3.2.5 Ensure broadcast ICMP requests are ignored (Scored)': 'net.ipv4.icmp_echo_ignore_broadcasts = 1' in v325_1.stdout or v325_2.stdout is match('net\\.ipv4\\.icmp_echo_ignore_broadcasts\\s*=\\s*1')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.6 Ensure bogus ICMP responses are ignored (Scored)
   block:
     - name: 3.2.6 Ensure bogus ICMP responses are ignored [sysctl cli]
@@ -95,6 +115,10 @@
       register: v326_2
     - set_fact:
         results: "{{ results|combine({'3.2.6 Ensure bogus ICMP responses are ignored (Scored)': 'net.ipv4.icmp_ignore_bogus_error_responses = 1' in v326_1.stdout or v326_2.stdout is match('net\\.ipv4\\.icmp_ignore_bogus_error_responses\\s*=\\s*1')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.7 Ensure Reverse Path Filtering is enabled (Scored)
   block:
     - name: 3.2.7 Ensure Reverse Path Filtering is enabled [sysctl cli ipv4.conf.all]
@@ -113,6 +137,10 @@
       register: v327_4
     - set_fact:
         results: "{{ results|combine({'3.2.7 Ensure Reverse Path Filtering is enabled (Scored)': ('net.ipv4.conf.all.rp_filter = 1' in v327_1.stdout or v327_3.stdout is match('net\\.ipv4\\.conf\\.all\\.rp_filter\\s*=\\s*1')) and ('net.ipv4.conf.default.rp_filter = 1' in v327_2.stdout or v327_4.stdout is match('net\\.ipv4\\.conf\\.default\\.rp_filter\\s*=\\s*1'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.2.8 Ensure TCP SYN Cookies is enabled (Scored)
   block:
     - name: 3.2.8 Ensure TCP SYN Cookies is enabled [sysctl cli]
@@ -124,3 +152,6 @@
       register: v328_2
     - set_fact:
         results: "{{ results|combine({'3.2.8 Ensure TCP SYN Cookies is enabled (Scored)': 'net.ipv4.tcp_syncookies = 1' in v328_1.stdout or v328_2.stdout is match('net\\.ipv4\\.tcp_syncookies\\s*=\\s*1')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation

@@ -13,6 +13,10 @@
       register: v341_2
     - set_fact:
         results: "{{ results|combine({'3.4.1 Ensure TCP Wrappers is installed (Scored)': v341_1 is match('tcp_wrappers-\\S+') and v341_2 is match('tcp_wrappers-libs-\\S+')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
   block:
     - name: 3.4.2 Ensure /etc/hosts.allow is configured
@@ -21,6 +25,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.4.2 Ensure /etc/hosts.allow is configured (Scored)': v342.stdout_lines|select('match', '^[^#\\s].*')|count>0}) }}"
+  tags:
+    - level1_station
+    - level2_station
+
 - name: 3.4.3 Ensure /etc/hosts.deny is configured (Scored)
   block:
     - name: 3.4.3 Ensure /etc/hosts.deny is configured
@@ -29,6 +37,10 @@
       register: v343
     - set_fact:
         results: "{{ results|combine({'3.4.3 Ensure /etc/hosts.deny is configured (Scored)': v343.stdout is search('ALL:\\s*ALL') or v343.stdout_lines|select('match', '^[^#\\s].*')|count>0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)
   block:
     - name:
@@ -37,6 +49,10 @@
       register: v344
     - set_fact:
         results: "{{ results|combine({'3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)': v344.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
   block:
     - name: 3.4.5 Ensure permissions on /etc/hosts.deny are configured
@@ -45,4 +61,6 @@
       register: v345
     - set_fact:
         results: "{{ results|combine({'3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)': v345.stdout is search('Access:\\s*(0644\\/-rw-r--r--)\\s*Uid:\\s*(\\s*0\\/\\s*root)\\s*Gid:\\s*(\\s*0\\/\\s*root)')}) }}"
-
+  tags:
+    - level1_server
+    - level1_workstation

@@ -19,6 +19,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.3.1 Ensure IPv6 router advertisements are not accepted (Not Scored)': ('net.ipv6.conf.all.accept_ra = 0' in v331_1.stdout or v331_3.stdout is match('net\\.ipv6\\.conf\\.all\\.accept_ra\\s*=\\s*0') and ('net.ipv6.conf.default.accept_ra = 0' in v331_2.stdout or v331_4.stdout is match('net\\.ipv6\\.conf\\.default\\.accept_ra\\s*=\\s*0')))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.3.2 Ensure IPv6 redirects are not accepted (Not Scored)
   block:
     - name: 3.3.2 Ensure IPv6 redirects are not accepted [sysctl cli ipv6.conf.all]
@@ -37,6 +41,10 @@
       register: v332_4
     - set_fact:
         results: "{{ results|combine({'3.3.2 Ensure IPv6 redirects are not accepted (Not Scored)': ('net.ipv6.conf.all.accept_redirect = 0' in v332_1.stdout or v332_3.stdout is match('net\\.ipv6\\.conf\\.all\\.accept_redirect\\s*=\\s*0')) and ('net.ipv6.conf.default.accept_redirect = 0' in v332_3.stdout or v332_4.stdout is match('net\\.ipv6\\.conf\\.default\\.accept_redirect\\s*=\\s*0'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.3.3 Ensure IPv6 is disabled (Not Scored)
   block:
     - name: 3.3.3 Ensure IPv6 is disabled
@@ -45,3 +53,6 @@
       register: v333
     - set_fact:
         results: "{{ results|combine({'3.3.3 Ensure IPv6 is disabled (Not Scored)': v333.stdout_lines|select('search', 'ipv6.disable=1')|count == v333.stdout_lines|length}) }}"
+  tags:
+    - level1_server
+    - level1_workstation

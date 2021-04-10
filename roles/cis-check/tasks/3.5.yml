@@ -13,6 +13,10 @@
       register: v351_2
     - set_fact:
         results: "{{ results|combine({'3.5.1 Ensure DCCP is disabled (Not Scored)': ('install /bin/true' in v351_1.stdout or v351_1.stdout_lines|length==0) and v351_2.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.5.2 Ensure SCTP is disabled (Not Scored)
   block:
     - name: 3.5.2 Ensure SCTP is disabled [modprobe]
@@ -25,6 +29,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.5.2 Ensure SCTP is disabled (Not Scored)': ('install /bin/true' in v352_1.stdout or v352_1.stdout_lines|length==0) and v352_2.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.5.3 Ensure RDS is disabled (Not Scored)
   block:
     - name: 3.5.3 Ensure RDS is disabled [modprobe]
@@ -37,6 +45,10 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.5.3 Ensure RDS is disabled (Not Scored)': ('install /bin/true' in v353_1.stdout or v353_1.stdout_lines|length==0) and v353_2.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.5.4 Ensure TIPC is disabled (Not Scored)
   block:
     - name: 3.5.4 Ensure TIPC is disabled [modprobe]
@@ -49,3 +61,6 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.5.4 Ensure TIPC is disabled (Not Scored)': ('install /bin/true' in v354_1.stdout or v354_1.stdout_lines|length==0) and v354_2.stdout_lines|length==0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation

@@ -12,6 +12,10 @@
       register: v311_2
     - set_fact:
         results: "{{ results|combine({'3.1.1 Ensure IP forwarding is disabled (Scored)': 'net.ipv4.ip_forward = 0' in v311_1.stdout or v311_2.stdout is match('net\\.ipv4\\.ip_forward\\s*=\\s*0')}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 3.1.2 Ensure packet redirect sending is disabled (Scored)
   block:
     - name: 3.1.2 Ensure packet redirect sending is disabled sysctl cli command [ipv4.all]
@@ -30,3 +34,6 @@
       ignore_errors: true
     - set_fact:
         results: "{{ results|combine({'3.1.2 Ensure packet redirect sending is disabled (Scored)': ('net.ipv4.conf.all.send_redirects = 0' in v312_1.stdout or v312_3.stdout is match('net\\.ipv4\\.conf\\.all\\.send_redirects\\s*=\\s*0')) and ('net.ipv4.conf.default.send_redirects = 0' in v312_2.stdout or v312_4.stdout is match('net\\.ipv4\\.conf\\.default\\.send_redirects\\s*=\\s*0'))}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
