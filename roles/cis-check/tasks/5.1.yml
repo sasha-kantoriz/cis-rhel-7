@@ -14,7 +14,7 @@
 
 - name: 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
   block:
-    - name:
+    - name: 5.1.2 Ensure permissions on /etc/crontab are configured
       shell: "stat /etc/crontab"
       register: v512
       ignore_errors: true
