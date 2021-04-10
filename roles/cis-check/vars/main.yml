@@ -1,3 +1,5 @@
 ---
 # vars file for cis-check
+remote_results_path: /data-export
+ansible_server_results_path: /data-export
 results: {}

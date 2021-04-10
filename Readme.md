@@ -39,10 +39,11 @@ Each section (`1-6`) has got appropriate tags (`s1 - s6`), each subsection (eg. 
 
 To build environment:
 
-- docker build -t cis-hardening .
+- docker build -t cis-hardening . 
+- create folder for results data bind mounting: `mkdir data`
 - prepare inventory file with remote client servers (`ssh-key`)
 - place SSH-Key for remote hosts, should be world readable (`hosts`)
-- docker run --rm -it -v `pwd`/ssh-key:/ssh-key -v `pwd`/hosts:/hosts cis-hardening 'eval `ssh-agent`; ssh-add /ssh-key; ansible-playbook playbook.yml -i hosts [--tags \<commaSeparatedTagsList>]'
+- docker run --rm -it -v `pwd`/data:/data-export -v `pwd`/ssh-key:/ssh-key -v `pwd`/hosts:/hosts cis-hardening 'eval `ssh-agent`; ssh-add /ssh-key; ansible-playbook playbook.yml -i hosts [--tags \<commaSeparatedTagsList>]'
 
 Inventory file consists of two groups:
 - log host servers: used for centralizion of logs collection

@@ -1,9 +1,39 @@
 ---
+- name: Create remote results directory
+  file:
+    path: "{{ remote_results_path }}"
+    state: directory
+    mode: '777'
+  tags:
+    - results
+- name: Create results directory
+  file:
+    path: "{{ ansible_server_results_path }}"
+    state: directory
+    mode: "777"
+  connection: local
+  tags:
+    - results
 - name: Dump CSV
   copy:
-    dest: "~/{{ ansible_ssh_host }}-cis-check-{{ ansible_date_time.iso8601}}.csv"
+    dest: "{{ remote_results_path }}/{{ ansible_ssh_host }}-cis-check-{{ ansible_date_time.iso8601}}.csv"
     content: |
       {{ ','.join(results.keys()|list) }}
-      {{ ','.join(results.values()|map('string')|list) }}"
+      {{ ','.join(results.values()|map('string')|list) }}
+  tags:
+    - results
+- name: list all remote CSV results
+  find:
+    path: "{{ remote_results_path }}"
+    patterns: "*cis-check*.csv"
+  register: csv_results
+  tags:
+    - results
+- name: download all remote CSV results
+  fetch:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_server_results_path }}/"
+    flat: yes
+  with_items: "{{ csv_results.files }}"
   tags:
     - results
