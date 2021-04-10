@@ -143,11 +143,11 @@
 
 - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
   block:
-    - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured
+    - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured [ClientAliveInterval]
       shell: 'grep "^ClientAliveInterval" /etc/ssh/sshd_config'
       register: v5212_1
       ignore_errors: true
-    - name:
+    - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured [ClientAliveCountMax]
       shell: 'grep "^ClientAliveCountMax" /etc/ssh/sshd_config'
       register: v5212_2
       ignore_errors: true
