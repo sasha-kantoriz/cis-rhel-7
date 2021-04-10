@@ -10,6 +10,10 @@
       register: v4111
     - set_fact:
         results: '{{ results|combine({"4.1.1.1 Ensure audit log storage size is configured (Not Scored)": v4111.stdout is search("max_log_file\s*=\s*\d+")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.1.2 Ensure system is disabled when audit logs are full (Scored)
   block:
     - name: 4.1.1.2 Ensure system is disabled when audit logs are full [no space available for audit logs action]
@@ -26,6 +30,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.1.2 Ensure system is disabled when audit logs are full (Scored)": v4112_1.stdout is match("space_left_action\s*=\s*email") and v4112_2.stdout is match("action_mail_acct\s*=\s*root") and v4112_3.stdout is match("admin_space_left_action\s*=\s*halt")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
   block:
     - name: 4.1.1.3 Ensure audit logs are not automatically deleted
@@ -34,6 +42,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.1.3 Ensure audit logs are not automatically deleted (Scored)": v4113.stdout is match("max_log_file_action\s*=\s*keep_logs")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.2 Ensure auditd service is enabled (Scored)
   block:
     - name: 4.1.2 Ensure auditd service is enabled
@@ -42,6 +54,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.2 Ensure auditd service is enabled (Scored)": "enabled" in v412.stdout}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.3 Ensure auditing for processes that start prior to auditd is enabled (Scored)
   block:
     - name: 4.1.3 Ensure auditing for processes that start prior to auditd is enabled
@@ -50,6 +66,10 @@
       register: v413_1
     - set_fact:
         results: '{{ results|combine({"4.1.3 Ensure auditing for processes that start prior to auditd is enabled (Scored)": v413_1.stdout_lines|select("search", "audit=1")|count==v413_1.stdout_lines|length}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.4 Ensure events that modify date and time information are collected (Scored)
   block:
     - name: 4.1.4 Ensure events that modify date and time information are collected [64bit audit.rules]
@@ -62,6 +82,10 @@
       register: v414_2
     - set_fact:
         results: '{{ results|combine({"4.1.4 Ensure events that modify date and time information are collected (Scored)": v414_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*adjtimex\s*-S\s*settimeofday\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*adjtimex\s*-S\s*settimeofday\s*-S\s*stime\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*clock_settime\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*clock_settime\s*-k\s*time-change\n\s*-w\s*/etc/localtime\s*-p\s*wa\s*-k\s*time-change") and v414_2.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*adjtimex\s*-S\s*settimeofday\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*adjtimex\s*-S\s*settimeofday\s*-S\s*stime\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*clock_settime\s*-k\s*time-change\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*clock_settime\s*-k\s*time-change\n\s*-w\s*/etc/localtime\s*-p\s*wa\s*-k\s*time-change")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.5 Ensure events that modify user/group information are collected (Scored)
   block:
     - name: 4.1.5 Ensure events that modify user/group information are collected [audit.rules]
@@ -74,6 +98,10 @@
       register: v415_2
     - set_fact:
         results: '{{ results|combine({"4.1.5 Ensure events that modify user/group information are collected (Scored)": v415_1.stdout is match("\s*-w\s*/etc/group\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/passwd\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/gshadow\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/shadow\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/security/opasswd\s*-p\s*wa\s*-k\s*identity") and v415_2.stdout is match("\s*-w\s*/etc/group\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/passwd\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/gshadow\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/shadow\s*-p\s*wa\s*-k\s*identity\n\s*-w\s*/etc/security/opasswd\s*-p\s*wa\s*-k\s*identity")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.6 Ensure events that modify the system's network environment are collected (Scored)
   block:
     - name: 4.1.6 Ensure events that modify the system's network environment are collected [64bit audit.rules]
@@ -86,6 +114,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.6 Ensure events that modify the systems network environment are collected (Scored)": v416_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*sethostname\s*-S\s*setdomainname\s*-k\s*system-locale\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*sethostname\s*-S\s*setdomainname\s*-k\s*system-locale\n\s*-w\s*/etc/issue\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/issue.net\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/hosts\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/sysconfig/network\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/sysconfig/network-scripts/\s*-p\s*wa\s*-k\s*system-locale") and v416_2.stdout("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*sethostname\s*-S\s*setdomainname\s*-k\s*system-locale\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*sethostname\s*-S\s*setdomainname\s*-k\s*system-locale\n\s*-w\s*/etc/issue\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/issue.net\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/hosts\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/sysconfig/network\s*-p\s*wa\s*-k\s*system-locale\n\s*-w\s*/etc/sysconfig/network-scripts/\s*-p\s*wa\s*-k\s*system-locale")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected (Scored)
   block:
     - name: 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected
@@ -94,6 +126,10 @@
       register: v417
     - set_fact:
         results: '{{ results|combine({"4.1.7 Ensure events that modify the systems Mandatory Access Controls are collected (Scored)": v417.stdout is match("\s*-w\s*/etc/selinux/\s*-p\s*wa\s*-k\s*MAC-policy\n\s*-w\s*/usr/share/selinux/\s*-p\s*wa\s*-k\s*MAC-policy")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.8 Ensure login and logout events are collected (Scored)
   block:
     - name: 4.1.8 Ensure login and logout events are collected
@@ -102,6 +138,10 @@
       register: v418
     - set_fact:
         results: '{{ results|combine({"4.1.8 Ensure login and logout events are collected (Scored)": v418.stdout is match("\s*-w\s*/var/log/lastlog\s*-p\s*wa\s*-k\s*logins\n\s*-w\s*/var/run/faillock/\s*-p\s*wa\s*-k\s*logins\n")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.9 Ensure session initiation information is collected (Scored)
   block:
     - name: 4.1.9 Ensure session initiation information is collected [session at audit.rules]
@@ -122,6 +162,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.9 Ensure session initiation information is collected (Scored)": v419_1.stdout is match("-w\s\*/var\/run\/utmp\s*-p\s*wa\s*-k\s*session") and v419_2.stdout is match("-w\s\*/var\/run\/utmp\s*-p\s*wa\s*-k\s*session") and v419_3.stdout is match("\s*-w\s*/var/log/wtmp\s*-p\s*wa\s*-k\s*logins\n\s*-w\s*/var/log/btmp\s*-p\s*wa\s*-k\s*logins") and v419_4.stdout is match("\s*-w\s*/var/log/wtmp\s*-p\s*wa\s*-k\s*logins\n\s*-w\s*/var/log/btmp\s*-p\s*wa\s*-k\s*logins")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.10 Ensure discretionary access control permission modification events are collected (Scored)
   block:
     - name: 4.1.10 Ensure discretionary access control permission modification events are collected [audit.rules]
@@ -134,6 +178,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.10 Ensure discretionary access control permission modification events are collected (Scored)": v4110_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*chmod\s*-S\s*fchmod\s*-S\s*fchmodat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*chmod\s*-S\s*fchmod\s*-S\s*fchmodat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*chown\s*-S\s*fchown\s*-S\s*fchownat\s*-S\s*lchown\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*chown\s*-S\s*fchown\s*-S\s*fchownat\s*-S\s*lchown\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*setxattr\s*-S\s*lsetxattr\s*-S\s*fsetxattr\s*-S\s*removexattr\s*-S\s*lremovexattr\s*-S\s*fremovexattr\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*setxattr\s*-S\s*lsetxattr\s*-S\s*fsetxattr\s*-S\s*removexattr\s*-S\s*lremovexattr\s*-S\s*fremovexattr\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod") and v4110_2.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*chmod\s*-S\s*fchmod\s*-S\s*fchmodat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*chmod\s*-S\s*fchmod\s*-S\s*fchmodat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*chown\s*-S\s*fchown\s*-S\s*fchownat\s*-S\s*lchown\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*chown\s*-S\s*fchown\s*-S\s*fchownat\s*-S\s*lchown\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*setxattr\s*-S\s*lsetxattr\s*-S\s*fsetxattr\s*-S\s*removexattr\s*-S\s*lremovexattr\s*-S\s*fremovexattr\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*setxattr\s*-S\s*lsetxattr\s*-S\s*fsetxattr\s*-S\s*removexattr\s*-S\s*lremovexattr\s*-S\s*fremovexattr\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*perm_mod")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected (Scored)
   block:
     - name: 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected [64bit audit.rules]
@@ -146,6 +194,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.11 Ensure unsuccessful unauthorized file access attempts are collected (Scored)": v4111_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EACCES\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EACCES\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EPERM\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EPERM\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access") and v4111_2.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EACCES\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EACCES\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EPERM\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*creat\s*-S\s*open\s*-S\s*openat\s*-S\s*truncate\s*-S\s*ftruncate\s*-F\s*exit=-EPERM\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*access")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.12 Ensure use of privileged commands is collected (Scored)
   block:
     - name: 4.1.12 Ensure use of privileged commands is collected [get auditctl rules]
@@ -169,6 +221,10 @@
       with_items: "{{ v4112_3 }}"
     - set_fact:
         results: '{{ results|combine({"4.1.12 Ensure use of privileged commands is collected (Scored)": v4112_4.results|selectattr("ansible_facts", "defined")|map(attribute="ansible_facts.result")|list|select("eq", false)|count==0}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.13 Ensure successful file system mounts are collected (Scored)
   block:
     - name: 4.1.13 Ensure successful file system mounts are collected [audit.rules]
@@ -181,6 +237,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.13 Ensure successful file system mounts are collected (Scored)": v4113_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*mount\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*mounts\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*mount\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*mounts\n") and v4113_2.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*mount\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*mounts\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*mount\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*mounts\n")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.14 Ensure file deletion events by users are collected (Scored)
   block:
     - name: 4.1.14 Ensure file deletion events by users are collected [audit.rules]
@@ -193,6 +253,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.14 Ensure file deletion events by users are collected (Scored)": v4114_1.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*unlink\s*-S\s*unlinkat\s*-S\s*rename\s*-S\s*renameat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*delete\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*unlink\s*-S\s*unlinkat\s*-S\s*rename\s*-S\s*renameat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*delete") and v4114_2.stdout is match("\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*unlink\s*-S\s*unlinkat\s*-S\s*rename\s*-S\s*renameat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*delete\n\s*-a\s*always,exit\s*-F\s*arch=b32\s*-S\s*unlink\s*-S\s*unlinkat\s*-S\s*rename\s*-S\s*renameat\s*-F\s*auid>=1000\s*-F\s*auid!=4294967295\s*-k\s*delete")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.15 Ensure changes to system administration scope (sudoers) is collected (Scored)
   block:
     - name: 4.1.15 Ensure changes to system administration scope (sudoers) is collected [audit.rules]
@@ -205,6 +269,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.15 Ensure changes to system administration scope (sudoers) is collected (Scored)": v4115_1.stdout is match("\s*-w\s*/etc/sudoers\s*-p\s*wa\s*-k\s*scope\n\s*-w\s*/etc/sudoers.d/\s*-p\s*wa\s*-k\s*scope") and v4115_2.stdout is match("\s*-w\s*/etc/sudoers\s*-p\s*wa\s*-k\s*scope\n\s*-w\s*/etc/sudoers.d/\s*-p\s*wa\s*-k\s*scope")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.16 Ensure system administrator actions (sudolog) are collected (Scored)
   block:
     - name: 4.1.16 Ensure system administrator actions (sudolog) are collected [audit.rules]
@@ -217,6 +285,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.16 Ensure system administrator actions (sudolog) are collected (Scored)": v4116_1.stdout is match("\s*-w\s*/var/log/sudo.log\s*-p\s*wa\s*-k\s*actions") and v4116_2.stdout is match("\s*-w\s*/var/log/sudo.log\s*-p\s*wa\s*-k\s*actions")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.17 Ensure kernel module loading and unloading is collected (Scored)
   block:
     - name: 4.1.17 Ensure kernel module loading and unloading is collected [64bit audit.rules]
@@ -229,6 +301,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.17 Ensure kernel module loading and unloading is collected (Scored)": v4117_1.stdout is match("\s*-w\s*/sbin/insmod\s*-p\s*x\s*-k\s*modules\n\s*-w\s*/sbin/rmmod\s*-p\s*x\s*-k\s*modules\n\s*-w\s*/sbin/modprobe\s*-p\s*x\s*-k\s*modules\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*init_module\s*-S\s*delete_module\s*-k\s*modules") and v4117_2.stdout is match("\s*-w\s*/sbin/insmod\s*-p\s*x\s*-k\s*modules\n\s*-w\s*/sbin/rmmod\s*-p\s*x\s*-k\s*modules\n\s*-w\s*/sbin/modprobe\s*-p\s*x\s*-k\s*modules\n\s*-a\s*always,exit\s*-F\s*arch=b64\s*-S\s*init_module\s*-S\s*delete_module\s*-k\s*modules")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
+
 - name: 4.1.18 Ensure the audit configuration is immutable (Scored)
   block:
     - name: 4.1.18 Ensure the audit configuration is immutable
@@ -237,3 +313,6 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"4.1.18 Ensure the audit configuration is immutable (Scored)": v4118.stdout is match("\s*-e\s*2")}) }}'
+  tags:
+    - level2_server
+    - level2_workstation
