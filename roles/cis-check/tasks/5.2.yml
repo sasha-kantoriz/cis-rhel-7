@@ -9,6 +9,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)": v521.stdout is search("Access:\s*\(0600\/-rw-------\)\s*Uid:\s*\(\s*0\/\s*root\)\s*Gid:\s*\(\s*0\/\s*root\)") }) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.2 Ensure SSH Protocol is set to 2 (Scored)
   block:
     - name: 5.2.2 Ensure SSH Protocol is set to 2
@@ -17,6 +21,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.2 Ensure SSH Protocol is set to 2 (Scored)": v522.stdout is match("Protocol\s*2$")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.3 Ensure SSH LogLevel is set to INFO (Scored)
   block:
     - name: 5.2.3 Ensure SSH LogLevel is set to INFO
@@ -25,6 +33,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.3 Ensure SSH LogLevel is set to INFO (Scored)": v523.stdout is match("LogLevel\s*INFO")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.4 Ensure SSH X11 forwarding is disabled (Scored)
   block:
     - name: 5.2.4 Ensure SSH X11 forwarding is disabled
@@ -33,6 +45,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.4 Ensure SSH X11 forwarding is disabled (Scored)": v524.stdout is match("X11Forwarding\s*no")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
   block:
     - name: 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less
@@ -41,6 +57,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)": v525.stdout is match("MaxAuthTries\s*[0-4]$")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)
   block:
     - name: 5.2.6 Ensure SSH IgnoreRhosts is enabled
@@ -49,6 +69,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)": v526.stdout is match("IgnoreRhosts\s*yes")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored)
   block:
     - name: 5.2.7 Ensure SSH HostbasedAuthentication is disabled
@@ -57,6 +81,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored)": v527.stdout is match("HostbasedAuthentication\s*no")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.8 Ensure SSH root login is disabled (Scored)
   block:
     - name: 5.2.8 Ensure SSH root login is disabled
@@ -65,6 +93,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.8 Ensure SSH root login is disabled (Scored)": v528.stdout is match("PermitRootLogin\s*no")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored)
   block:
     - name: 5.2.9 Ensure SSH PermitEmptyPasswords is disabled
@@ -73,6 +105,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored)": v529.stdout is match("PermitEmptyPasswords\s*no")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored)
   block:
     - name: 5.2.10 Ensure SSH PermitUserEnvironment is disabled
@@ -81,6 +117,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored)": v5210.stdout is match("PermitUserEnvironment\s*no")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.11 Ensure only approved MAC algorithms are used (Scored)
   block:
     - name: 5.2.11 Ensure only approved MAC algorithms are used [grep used MACs]
@@ -97,6 +137,10 @@
         v5211_2: {'results': [{'ansible_facts': { 'result': false } }] }
     - set_fact:
         results: '{{ results|combine({"5.2.11 Ensure only approved MAC algorithms are used (Scored)": v5211_2.results|selectattr("ansible_facts", "defined")|map(attribute="ansible_facts.result")|select("equalto", false)|count==0}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
   block:
     - name: 5.2.12 Ensure SSH Idle Timeout Interval is configured
@@ -109,6 +153,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)": v5212_1.stdout is match("ClientAliveInterval\s*(300|[1-2]\d{2}|[1-9]\d|\d)$") and v5212_2.stdout is match("ClientAliveCountMax\s*[0-3]$")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
   block:
     - name: 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less
@@ -117,6 +165,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)": v5213.stdout is match("LoginGraceTime\s*(60|[1-5]\d|\d)$")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.14 Ensure SSH access is limited (Scored)
   block:
     - name: 5.2.14 Ensure SSH access is limited [allowusers]
@@ -137,6 +189,10 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.14 Ensure SSH access is limited (Scored)": v5214_1.stdout is match("AllowUsers\s*\S+") or v5214_2.stdout is match("AllowGroups\s*\S+") or v5214_3.stdout is match("DenyUsers\s\S+") or v5214_4.stdout is match("DenyGroups\s*\S+")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
+
 - name: 5.2.15 Ensure SSH warning banner is configured (Scored)
   block:
     - name: 5.2.15 Ensure SSH warning banner is configured
@@ -145,3 +201,6 @@
       ignore_errors: true
     - set_fact:
         results: '{{ results|combine({"5.2.15 Ensure SSH warning banner is configured (Scored)": v5215.stdout is match("Banner\s*\/etc\/issue\.net")}) }}'
+  tags:
+    - level1_server
+    - level1_workstation
