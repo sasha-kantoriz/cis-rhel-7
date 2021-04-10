@@ -51,12 +51,12 @@
 
 - name: 2.3.5 Ensure LDAP client is not installed (Scored)
   block:
-    - name: 2.3.5Ensure LDAP client is not installed
+    - name: 2.3.5 Ensure LDAP client is not installed
       shell: "rpm -q openldap-clients"
       ignore_errors: true
       register: v235_output
     - set_fact:
-        results: "{{ results|combine({'2.3.5Ensure LDAP client is not installed (Scored)': 'package openldap-clients is not installed' in v235_output.stdout}) }}"
+        results: "{{ results|combine({'2.3.5 Ensure LDAP client is not installed (Scored)': 'package openldap-clients is not installed' in v235_output.stdout}) }}"
   tags:
     - level1_server
     - level1_workstation
