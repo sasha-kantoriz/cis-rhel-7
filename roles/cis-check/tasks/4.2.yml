@@ -53,7 +53,7 @@
       shell: "ls -l /etc/rsyslog.conf /etc/rsyslog.d/*.conf"
       register: v4214_1
     - name: 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host
-      shell: 'grep "^\*\.\*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
+      shell: 'grep "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf'
       register: v4214_2
       ignore_errors: true
     - set_fact:
