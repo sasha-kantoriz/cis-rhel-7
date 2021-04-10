@@ -8,6 +8,9 @@
       register: v121
     - set_fact:
         results: "{{ results|combine({'1.2.1 Ensure package manager repositories are configured (Not Scored)': v121.stdout_lines|length>3}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
 
 - name: 1.2.2 Ensure gpgcheck is globally activated (Scored)
   block:
@@ -28,6 +31,9 @@
         v122_4: "{{ v122_3_output.results | selectattr('stdout','equalto','0') | list | count == 0 }}"
     - set_fact:
         results: "{{ results|combine({'1.2.2 Ensure gpgcheck is globally activated (Scored)': '1' in v122_1_output and v122_4}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
 
 - name:
   block:
@@ -37,6 +43,9 @@
     - name: 1.2.3 set fact
       set_fact:
         results: "{{ results|combine({'1.2.3 Ensure GPG keys are configured (Not Scored)': v123_output.stdout_lines|length>0}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
 
 - name:
   block:
@@ -46,6 +55,9 @@
       register: v124
     - set_fact:
         results: "{{ results|combine({'1.2.4 Ensure Red Hat Subscription Manager connection is configured (Not Scored)': 'system identity:\\s*\\S+' in v124.stdout}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
 
 - name:
   block:
@@ -56,3 +68,6 @@
     - name: 1.2.5 set fact
       set_fact:
         results: "{{ results|combine({'1.2.5 Disable the rhnsd Daemon (Not Scored)': v125_output.stdout_lines| length==0 or not 'on' in v125_output.stdout }) }}"
+  tags:
+    - level2_server
+    - level2_workstation

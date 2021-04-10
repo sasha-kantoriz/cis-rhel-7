@@ -6,3 +6,6 @@
       register: v18_output
     - set_fact:
         results: "{{ results|combine({'1.8 Ensure updates, patches, and additional security software are installed (Scored)': 'No packages needed for security' in v18_output.stdout}) }}"
+  tags:
+    - level1_server
+    - level1_workstation
