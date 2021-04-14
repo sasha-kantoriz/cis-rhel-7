@@ -220,7 +220,7 @@
       ignore_errors: true
       register: v119_output
     - set_fact:
-        results: "{{ results|combine({'1.1.9 Ensure nosuid option set on /var/tmp partition (Scored)': v119_output.stdout_lines|length>0}) }}"
+        results: "{{ results|combine({'1.1.9 Ensure nosuid option set on /var/tmp partition (Scored)': 'nosuid' in v119_output.stdout}) }}"
   tags:
     - level1_server
     - level1_workstation
