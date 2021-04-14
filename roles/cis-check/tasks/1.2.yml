@@ -40,6 +40,7 @@
     - name: 1.2.3 Ensure GPG keys are configured
       shell: "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'"
       register: v123_output
+      ignore_errors: true
     - name: 1.2.3 set fact
       set_fact:
         results: "{{ results|combine({'1.2.3 Ensure GPG keys are configured (Not Scored)': v123_output.stdout_lines|length>0}) }}"
