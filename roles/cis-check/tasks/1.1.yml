@@ -196,7 +196,7 @@
       ignore_errors: true
       register: v117_output
     - set_fact:
-        results: "{{ results|combine({'1.1.7 Ensure separate partition exists for /var/tmp (Scored)': 'nodev' in v117_output.stdout}) }}"
+        results: "{{ results|combine({'1.1.7 Ensure separate partition exists for /var/tmp (Scored)': v117_output.stdout_lines>0}) }}"
   tags:
     - level2_server
     - level2_workstation
