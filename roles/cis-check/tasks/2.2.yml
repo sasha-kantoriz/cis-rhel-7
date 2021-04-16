@@ -196,7 +196,7 @@
       register: v2212
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"2.2.12 Ensure Samba is not enabled (Scored)": "disabled" in v2212.stdout}) }}'
+        results: '{{ results|combine({"2.2.12 Ensure Samba is not enabled (Scored)": not "enabled" in v2212.stdout}) }}'
   tags:
     - level1_server
     - level1_workstation
