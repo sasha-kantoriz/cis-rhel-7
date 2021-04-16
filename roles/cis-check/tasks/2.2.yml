@@ -92,7 +92,7 @@
       register: v224
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"2.2.4 Ensure CUPS is not enabled (Scored)": "disabled" in v224.stdout}) }}'
+        results: '{{ results|combine({"2.2.4 Ensure CUPS is not enabled (Scored)": "disabled" in v224.stdout or v224.rc == 1}) }}'
   tags:
     - level1_server
     - level2_workstation
