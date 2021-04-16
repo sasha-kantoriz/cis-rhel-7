@@ -244,7 +244,7 @@
       register: v2216
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"2.2.16 Ensure NIS Server is not enabled (Scored)": "disabled" in v2216.stdout}) }}'
+        results: '{{ results|combine({"2.2.16 Ensure NIS Server is not enabled (Scored)": not "enabled" in v2216.stdout}) }}'
   tags:
     - level1_server
     - level1_workstation
