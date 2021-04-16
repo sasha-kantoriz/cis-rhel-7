@@ -29,7 +29,7 @@
       shell: "chkconfig --list"
       register: v213_output
     - set_fact:
-        results: "{{ results|combine({'2.1.3 Ensure discard services are not enabled (Scored)': (v213_output.stdout|regex_findall('discard-dgram:\\s*off')|count==1 or not 'discra-dgram' in v213_output.stdout) and v213_output.stdout|regex_findall('discard-stream:\\s*off')|count==1 or not 'discard-stream' in v213_output.stdout}) }}"
+        results: "{{ results|combine({'2.1.3 Ensure discard services are not enabled (Scored)': (v213_output.stdout|regex_findall('discard-dgram:\\s*off')|count==1 or not 'discrad-dgram' in v213_output.stdout) and v213_output.stdout|regex_findall('discard-stream:\\s*off')|count==1 or not 'discard-stream' in v213_output.stdout}) }}"
   tags:
     - level1_server
     - level1_workstation
