@@ -80,7 +80,7 @@
       register: v223
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"2.2.3 Ensure Avahi Server is not enabled (Scored)": "disabled" in v223.stdout}) }}'
+        results: '{{ results|combine({"2.2.3 Ensure Avahi Server is not enabled (Scored)": "disabled" in v223.stdout or v223.rc == 1}) }}'
   tags:
     - level1_server
     - level1_workstation
