@@ -172,7 +172,7 @@
       register: v2210
       ignore_errors: true
     - set_fact:
-        results: '{{ results|combine({"2.2.10 Ensure HTTP server is not enabled (Scored)": "disabled" in v2210.stdout}) }}'
+        results: '{{ results|combine({"2.2.10 Ensure HTTP server is not enabled (Scored)": not "enabled" in v2210.stdout}) }}'
   tags:
     - level1_server
     - level1_workstation
