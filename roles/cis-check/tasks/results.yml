@@ -17,9 +17,7 @@
 - name: Dump CSV
   copy:
     dest: "{{ remote_results_path }}/{{ ansible_ssh_host }}-cis-check-{{ ansible_date_time.iso8601}}.csv"
-    content: |
-      {{ ','.join(results.keys()|list) }}
-      {{ ','.join(results.values()|map('string')|list) }}
+    content: "{{ ','.join(results.keys()|list) }}\n{{ ','.join(results.values()|map('string')|list) }}"
   tags:
     - results
 - name: list all remote CSV results
