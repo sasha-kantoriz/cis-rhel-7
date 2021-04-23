@@ -19,7 +19,7 @@
     dest: "{{ remote_results_path }}/{{ ansible_ssh_host }}-cis-check-{{ ansible_date_time.date }}.txt"
     content: |
       {% for key in results %}
-        {{ key }}: {{ results[key] }}
+        {{ ansible_ssh_host }} {{ key }}: {{ results[key] }}
       {% endfor %}
   tags:
     - results
@@ -51,5 +51,20 @@
       register: result
     - debug:
         msg: "{{ result.stdout_lines }}"
+  tags:
+    - results
+- name: list all  results
+  block:
+    - name: list all  results
+      find:
+        path: "{{ ansible_server_results_path }}"
+        patterns: "*cis-check-{{ ansible_date_time.date }}.txt"
+      register: raw_results
+      delegate_to: localhost
+    - name: echo results to file
+      shell: "cat {{ ' '.join(raw_results.files|map(attribute='path')|list) }} > {{ ansible_server_results_path }}/cis-check-{{ ansible_date_time.date }}.txt"
+      delegate_to: localhost
+    - debug:
+        msg: "Results written to {{ ansible_server_results_path }}/cis-check-{{ ansible_date_time.date }}.txt"
   tags:
     - results
